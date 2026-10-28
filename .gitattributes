@@ -1,0 +1,5 @@
+# เก็บไฟล์ข้อความใน git เป็น LF เสมอ
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary

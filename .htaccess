@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^(install\.lock|DEV_TEST_LOGIN\.txt|README\.md)$">
+  Require all denied
+</FilesMatch>

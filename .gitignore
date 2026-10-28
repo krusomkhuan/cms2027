@@ -1,0 +1,16 @@
+# ค่าตั้งค่าเฉพาะเครื่อง (รหัสผ่านฐานข้อมูล) — ใช้ config.example.php เป็นต้นแบบ
+config.php
+
+# ไฟล์บัญชีทดสอบและสถานะการติดตั้ง
+DEV_TEST_LOGIN.txt
+install.lock
+
+# ไฟล์ที่ผู้ใช้อัปโหลด (เก็บเฉพาะ .htaccess ที่ป้องกันการรันสคริปต์)
+uploads/*
+!uploads/.htaccess
+
+# ไฟล์ชั่วคราว / เครื่องมือ
+.claude/
+*.log
+.DS_Store
+Thumbs.db
