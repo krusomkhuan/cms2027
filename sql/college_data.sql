@@ -262,5 +262,5 @@ UPDATE links SET title = 'ระบบรายงานวิชาโครง
 
 -- ปุ่มบริการ ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub (ลิงก์จะแจ้งภายหลัง)
 INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
-SELECT 'ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub', 'CertHub (Training Certificates)', '#', 'bi-award', 'eservice', 12
-WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub');
+SELECT 'ระบบ CertHub', 'CertHub (Training Certificates)', '#', 'bi-award', 'eservice', 12
+WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบ CertHub');
