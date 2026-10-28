@@ -246,3 +246,8 @@ UPDATE links SET title = 'ระบบคลังภาพ ImageHub', title_en 
 INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
 SELECT 'ระบบงานบุคลากร StaffHub', 'StaffHub (Personnel System)', '#', 'bi-person-badge', 'eservice', 9
 WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบงานบุคลากร StaffHub');
+
+-- ปุ่มบริการ ระบบเยี่ยมบ้าน VisitHub (ลิงก์จะแจ้งภายหลัง)
+INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
+SELECT 'ระบบเยี่ยมบ้าน VisitHub', 'VisitHub (Student Home Visit)', '#', 'bi-house-heart', 'eservice', 10
+WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบเยี่ยมบ้าน VisitHub');

@@ -37,7 +37,7 @@ foreach ($rows as $r) {
 }
 $icons = ['bi-link-45deg', 'bi-person-plus', 'bi-pc-display', 'bi-journal-check', 'bi-mortarboard', 'bi-people', 'bi-book', 'bi-envelope-paper',
     'bi-shield-check', 'bi-calendar-check', 'bi-clipboard-data', 'bi-building', 'bi-bank', 'bi-database', 'bi-briefcase', 'bi-camera-video',
-    'bi-facebook', 'bi-youtube', 'bi-globe', 'bi-chat-dots', 'bi-award', 'bi-bar-chart', 'bi-gear', 'bi-wifi', 'bi-images', 'bi-stars', 'bi-person-badge'];
+    'bi-facebook', 'bi-youtube', 'bi-globe', 'bi-chat-dots', 'bi-award', 'bi-bar-chart', 'bi-gear', 'bi-wifi', 'bi-images', 'bi-stars', 'bi-person-badge', 'bi-house-heart'];
 
 admin_header('ลิงก์ / E-Service', 'links');
 ?>
