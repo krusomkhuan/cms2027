@@ -228,3 +228,6 @@ INSERT INTO settings (skey, svalue) VALUES ('old_site_url', 'https://www.pticec.
 
 -- ลิงก์ ITA Online ของวิทยาลัย
 UPDATE links SET url = 'https://ita.pticec.ac.th/ati/' WHERE title = 'ITA Online';
+
+-- เปลี่ยน "ตรวจผลการเรียน" เป็นระบบคลังภาพ Image Hub (ลิงก์จะแจ้งภายหลัง)
+UPDATE links SET title = 'ระบบคลังภาพ Image Hub', title_en = 'Image Hub (Photo Archive)', icon = 'bi-images' WHERE title = 'ตรวจผลการเรียน';
