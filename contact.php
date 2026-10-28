@@ -94,7 +94,7 @@ echo page_banner($pageTitle, [$pageTitle => null]);
               <div class="col-12"><label class="form-label"><?= t('อีเมล') ?></label><input type="email" class="form-control" name="email" value="<?= e($form['email']) ?>" maxlength="150"></div>
               <div class="col-12"><label class="form-label"><?= t('เรื่อง') ?> *</label><input class="form-control" name="subject" value="<?= e($form['subject']) ?>" required maxlength="255"></div>
               <div class="col-12"><label class="form-label"><?= t('รายละเอียด') ?> *</label><textarea class="form-control" name="message" rows="5" required minlength="10" maxlength="5000"><?= e($form['message']) ?></textarea></div>
-              <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="consent" id="consent" required><label class="form-check-label small" for="consent"><?= t('ข้าพเจ้ายินยอมให้วิทยาลัยเก็บข้อมูลข้างต้นเพื่อใช้ติดต่อกลับเท่านั้น') ?></label></div></div>
+              <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="consent" id="consent" required><label class="form-check-label small" for="consent"><?= t('ข้าพเจ้ายินยอมให้วิทยาลัยเก็บข้อมูลข้างต้นเพื่อใช้ติดต่อกลับเท่านั้น') ?> (<a href="<?= url('page.php?slug=privacy') ?>" target="_blank"><?= t('นโยบายคุ้มครองข้อมูลส่วนบุคคล') ?></a>)</label></div></div>
               <div class="col-12"><button class="btn btn-primary px-4"><i class="bi bi-send"></i> <?= t('ส่งข้อความ') ?></button></div>
             </div>
           </form>
@@ -102,7 +102,7 @@ echo page_banner($pageTitle, [$pageTitle => null]);
       </div>
     </div>
     <?php if ($mapSrc): ?>
-      <div id="map" class="ratio ratio-21x9 mt-4 rounded overflow-hidden shadow-sm"><iframe src="<?= e($mapSrc) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0" title="<?= t('แผนที่') ?>"></iframe></div>
+      <div id="map" class="ratio ratio-21x9 mt-4 rounded overflow-hidden shadow-sm"><?= media_embed($mapSrc, 'Google Maps', t('แผนที่')) ?></div>
     <?php else: ?>
       <div id="map"></div>
     <?php endif; ?>

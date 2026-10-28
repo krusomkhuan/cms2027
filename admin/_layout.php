@@ -61,8 +61,10 @@ function admin_header(string $title, string $active = ''): void
         if ($me['role'] === 'admin') {
             $menu['settings'] = ['settings.php', 'bi-gear', 'ตั้งค่าเว็บไซต์'];
             $menu['users'] = ['users.php', 'bi-people', 'ผู้ใช้งาน / สมาชิก'];
+            $menu['pdpa'] = ['pdpa.php', 'bi-shield-lock', 'PDPA / ข้อมูลส่วนบุคคล'];
         }
     }
+    $openPdpa = $me['role'] === 'admin' ? (int) q("SELECT COUNT(*) FROM pdpa_requests WHERE status IN ('received','in_progress')")->fetchColumn() : 0;
     $pendingNews = is_reporter() ? 0 : (int) q("SELECT COUNT(*) FROM news WHERE status = 'pending'")->fetchColumn();
     $theme = setting('theme_color', '#1e3a8a');
     if (!preg_match('/^#[0-9a-fA-F]{6}$/', $theme)) {
@@ -94,7 +96,7 @@ function admin_header(string $title, string $active = ''): void
     </div>
     <nav class="side-nav">
       <?php foreach ($menu as $key => [$href, $icon, $label]): ?>
-        <a href="<?= url('admin/' . $href) ?>" class="<?= $active === $key ? 'active' : '' ?>"><i class="bi <?= $icon ?>"></i> <?= e($label) ?><?php if ($key === 'messages' && $unread): ?> <span class="badge text-bg-warning ms-auto"><?= $unread ?></span><?php endif; ?><?php if ($key === 'news' && $pendingNews): ?> <span class="badge text-bg-danger ms-auto" title="ข่าวรอตรวจ"><?= $pendingNews ?></span><?php endif; ?></a>
+        <a href="<?= url('admin/' . $href) ?>" class="<?= $active === $key ? 'active' : '' ?>"><i class="bi <?= $icon ?>"></i> <?= e($label) ?><?php if ($key === 'messages' && $unread): ?> <span class="badge text-bg-warning ms-auto"><?= $unread ?></span><?php endif; ?><?php if ($key === 'pdpa' && $openPdpa): ?> <span class="badge text-bg-danger ms-auto" title="คำร้องใช้สิทธิ์ที่ยังไม่เสร็จ"><?= $openPdpa ?></span><?php endif; ?><?php if ($key === 'news' && $pendingNews): ?> <span class="badge text-bg-danger ms-auto" title="ข่าวรอตรวจ"><?= $pendingNews ?></span><?php endif; ?></a>
       <?php endforeach; ?>
       <hr>
       <a href="<?= url() ?>" target="_blank"><i class="bi bi-box-arrow-up-right"></i> ดูหน้าเว็บไซต์</a>

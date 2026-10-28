@@ -104,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // ข้อมูลจริงของวิทยาลัย (ตั้งค่า หน้าข้อมูล แผนกวิชา ผู้บริหาร)
             $pdo->exec(file_get_contents(__DIR__ . '/sql/college_data.sql'));
+            $pdo->exec(file_get_contents(__DIR__ . '/sql/pdpa_pages.sql'));
 
             if ($sample) {
                 $news = [

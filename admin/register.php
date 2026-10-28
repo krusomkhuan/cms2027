@@ -109,7 +109,7 @@ $theme = setting('theme_color', '#1e3a8a');
                 <div class="form-text">ขอรหัสได้ที่งานประชาสัมพันธ์ของวิทยาลัย</div></div>
             <?php endif; ?>
             <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="consent" id="consent" required>
-              <label class="form-check-label small" for="consent">ข้าพเจ้าเป็นครูหรือบุคลากรของวิทยาลัย และจะลงเฉพาะข่าวที่ถูกต้อง เหมาะสม ไม่ละเมิดลิขสิทธิ์หรือข้อมูลส่วนบุคคลของผู้อื่น</label></div></div>
+              <label class="form-check-label small" for="consent">ข้าพเจ้าเป็นครูหรือบุคลากรของวิทยาลัย และจะลงเฉพาะข่าวที่ถูกต้อง เหมาะสม ไม่ละเมิดลิขสิทธิ์หรือข้อมูลส่วนบุคคลของผู้อื่น และรับทราบ<a href="<?= url('page.php?slug=privacy') ?>" target="_blank">นโยบายคุ้มครองข้อมูลส่วนบุคคล</a></label></div></div>
             <div class="col-12"><button class="btn btn-primary w-100 py-2"><i class="bi bi-person-plus"></i> สมัครสมาชิก</button></div>
           </div>
         </form>

@@ -241,8 +241,7 @@ require __DIR__ . '/includes/header.php';
         <div class="<?= $videos ? 'col-lg-4' : 'col-12' ?>">
           <div class="section-head"><div><h2 class="section-title">Facebook</h2><p class="section-sub"><?= t('ติดตามข่าวสารล่าสุด') ?></p></div></div>
           <div class="fb-embed">
-            <iframe src="https://www.facebook.com/plugins/page.php?href=<?= urlencode($fbUrl) ?>&tabs=timeline&width=500&height=560&small_header=true&adapt_container_width=true&hide_cover=false&locale=<?= $isEn ? 'en_US' : 'th_TH' ?>"
-              loading="lazy" title="Facebook Page" allow="encrypted-media"></iframe>
+            <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=timeline&width=500&height=560&small_header=true&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
           </div>
         </div>
       <?php endif; ?>

@@ -198,3 +198,34 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(150) NULL AFTER fullnam
   ADD COLUMN IF NOT EXISTS phone VARCHAR(50) NULL AFTER email,
   ADD COLUMN IF NOT EXISTS position VARCHAR(150) NULL AFTER phone;
 ALTER TABLE news MODIFY status ENUM('published','pending','draft') NOT NULL DEFAULT 'published';
+-- ---------- PDPA ----------
+-- บันทึกการให้ความยินยอมคุกกี้ (หลักฐานตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล) — เก็บ IP แบบ hash
+CREATE TABLE IF NOT EXISTS consent_logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  consent_id CHAR(16) NOT NULL,
+  analytics TINYINT(1) NOT NULL DEFAULT 0,
+  media TINYINT(1) NOT NULL DEFAULT 0,
+  policy_version VARCHAR(10) NOT NULL,
+  ip_hash CHAR(64) NULL,
+  user_agent VARCHAR(255) NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_consent_date (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- คำร้องใช้สิทธิ์ของเจ้าของข้อมูลส่วนบุคคล
+CREATE TABLE IF NOT EXISTS pdpa_requests (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  ref_no VARCHAR(20) NOT NULL UNIQUE,
+  request_type VARCHAR(30) NOT NULL,
+  relation VARCHAR(30) NULL,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NULL,
+  phone VARCHAR(50) NULL,
+  detail TEXT NOT NULL,
+  status ENUM('received','in_progress','completed','rejected') NOT NULL DEFAULT 'received',
+  admin_note TEXT NULL,
+  ip VARCHAR(45) NULL,
+  due_at DATE NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

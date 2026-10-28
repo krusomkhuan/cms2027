@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/init.php';
+require_once __DIR__ . '/pdpa.php';
 
 if (!is_file(ROOT_DIR . '/install.lock')) {
     redirect('install.php');
@@ -74,22 +75,22 @@ function video_card(array $v, bool $large = false): string
         . '<span class="vtitle">' . e(tr($v, 'title')) . '</span></a>';
 }
 
-/** หน้าต่างเล่นวิดีโอ YouTube (ใช้คู่กับ video_card) */
+/** หน้าต่างเล่นวิดีโอ YouTube (ใช้คู่กับ video_card) — โหลดวิดีโอเมื่อยินยอมคุกกี้สื่อภายนอกแล้วเท่านั้น */
 function video_modal(): string
 {
     return '<div class="modal fade" id="videoModal" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content bg-dark border-0">
   <div class="modal-header border-0 py-2"><h5 class="modal-title text-white fs-6"></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-  <div class="ratio ratio-16x9"><iframe src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="YouTube"></iframe></div>
+  <div class="ratio ratio-16x9 video-holder"></div>
 </div></div></div>
 <script>
 (() => {
-  const m = document.getElementById("videoModal"), f = m.querySelector("iframe");
+  const m = document.getElementById("videoModal"), holder = m.querySelector(".video-holder");
   m.addEventListener("show.bs.modal", (e) => {
     const a = e.relatedTarget;
     m.querySelector(".modal-title").textContent = a.dataset.title;
-    f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(a.dataset.yt) + "?autoplay=1&rel=0";
+    window.pdpa.embed(holder, "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(a.dataset.yt) + "?autoplay=1&rel=0", "YouTube", a.dataset.title);
   });
-  m.addEventListener("hidden.bs.modal", () => { f.src = "about:blank"; });
+  m.addEventListener("hidden.bs.modal", () => { holder.innerHTML = ""; });
 })();
 </script>';
 }

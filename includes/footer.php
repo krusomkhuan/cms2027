@@ -71,7 +71,12 @@ $phone = setting('phone');
   <div class="footer-bottom">
     <div class="container d-flex flex-wrap justify-content-between gap-2">
       <span>&copy; <?= lang() === 'en' ? date('Y') : date('Y') + 543 ?> <?= e($siteName) ?> <span class="opacity-50 small ms-1">v<?= APP_VERSION ?></span></span>
-      <a href="<?= url('contact.php') ?>" class="text-white-50 text-decoration-none"><?= t('ติดต่อผู้ดูแลเว็บไซต์') ?></a>
+      <span class="footer-legal">
+        <a href="<?= url('page.php?slug=privacy') ?>"><?= t('นโยบายคุ้มครองข้อมูลส่วนบุคคล') ?></a>
+        <a href="<?= url('page.php?slug=cookie-policy') ?>"><?= t('นโยบายคุกกี้') ?></a>
+        <?php if (pdpa_enabled()): ?><button type="button" data-bs-toggle="modal" data-bs-target="#pdpaModal"><?= t('ตั้งค่าคุกกี้') ?></button><?php endif; ?>
+        <a href="<?= url('pdpa_request.php') ?>"><?= t('ใช้สิทธิ์เจ้าของข้อมูล') ?></a>
+      </span>
     </div>
   </div>
 </footer>
@@ -104,7 +109,58 @@ $phone = setting('phone');
   </button>
 </div>
 <?php endif; ?>
-<a href="#" class="back-top" aria-label="<?= t('กลับด้านบน') ?>"><i class="bi bi-arrow-up"></i></a>
+<?php if (pdpa_enabled()): $consent = pdpa_consent(); $gaId = preg_match('/^G-[A-Z0-9]{4,20}$/', setting('ga_id')) ? setting('ga_id') : ''; ?>
+<div id="pdpaConfig" hidden data-version="<?= e(setting('pdpa_policy_version', '1.0')) ?>" data-path="<?= e(BASE_URL ?: '/') ?>"
+  data-endpoint="<?= url('pdpa_consent.php') ?>" data-ga="<?= e($gaId) ?>"
+  data-ph-text="<?= e(t('เนื้อหานี้แสดงจาก %s ซึ่งอาจบันทึกคุกกี้ในอุปกรณ์ของท่าน')) ?>" data-ph-btn="<?= e(t('อนุญาตสื่อภายนอกและแสดงเนื้อหา')) ?>"
+  data-ph-link="<?= e(t('นโยบายคุกกี้')) ?>" data-policy-url="<?= url('page.php?slug=cookie-policy') ?>"></div>
+<div class="pdpa-banner" id="pdpaBanner" role="dialog" aria-live="polite" aria-label="<?= t('การใช้คุกกี้') ?>" <?= $consent ? 'hidden' : '' ?>>
+  <div class="d-flex gap-3">
+    <i class="bi bi-cookie fs-2" style="color:var(--accent)"></i>
+    <div>
+      <div class="fw-medium mb-1"><?= t('เว็บไซต์นี้ใช้คุกกี้') ?></div>
+      <p class="small mb-2"><?= t('เราใช้คุกกี้ที่จำเป็นต่อการทำงานของเว็บไซต์ และขอความยินยอมสำหรับคุกกี้วิเคราะห์การใช้งานและสื่อภายนอก (Facebook, YouTube, Google Maps)') ?>
+        <a href="<?= url('page.php?slug=cookie-policy') ?>"><?= t('นโยบายคุกกี้') ?></a> · <a href="<?= url('page.php?slug=privacy') ?>"><?= t('นโยบายคุ้มครองข้อมูลส่วนบุคคล') ?></a></p>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary btn-sm" data-consent="all"><?= t('ยอมรับทั้งหมด') ?></button>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-consent="necessary"><?= t('เฉพาะที่จำเป็น') ?></button>
+        <button type="button" class="btn btn-link btn-sm" data-bs-toggle="modal" data-bs-target="#pdpaModal"><?= t('ตั้งค่า') ?></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="pdpaModal" tabindex="-1" aria-labelledby="pdpaModalTitle">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="pdpaModalTitle"><i class="bi bi-shield-lock"></i> <?= t('ตั้งค่าคุกกี้') ?></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= t('ปิด') ?>"></button></div>
+      <div class="modal-body">
+        <p class="small text-muted"><?= t('เลือกประเภทคุกกี้ที่อนุญาต ท่านเปลี่ยนการตั้งค่าได้ทุกเมื่อที่ลิงก์ “ตั้งค่าคุกกี้” ท้ายเว็บไซต์') ?></p>
+        <?php foreach ([
+            ['necessary', t('คุกกี้ที่จำเป็น'), t('ใช้รักษาการเข้าสู่ระบบ ป้องกันการปลอมแปลงแบบฟอร์ม จำภาษา และจำการตั้งค่านี้ — ปิดไม่ได้'), true],
+            ['analytics', t('คุกกี้วิเคราะห์การใช้งาน'), t('ช่วยวัดจำนวนผู้เข้าชมและหน้าที่ได้รับความนิยม เพื่อปรับปรุงเว็บไซต์'), $consent['analytics'] ?? false],
+            ['media', t('คุกกี้สื่อภายนอก'), t('แสดงโพสต์ Facebook วิดีทัศน์ YouTube และแผนที่ Google Maps ซึ่งผู้ให้บริการอาจบันทึกคุกกี้ของตนเอง'), $consent['media'] ?? false],
+        ] as [$key, $label, $desc, $on]): ?>
+          <div class="pdpa-option">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="pdpa_<?= $key ?>" data-pdpa="<?= $key ?>" <?= $on ? 'checked' : '' ?> <?= $key === 'necessary' ? 'disabled' : '' ?>>
+              <label class="form-check-label fw-medium" for="pdpa_<?= $key ?>"><?= e($label) ?></label>
+            </div>
+            <div class="small text-muted ms-5"><?= e($desc) ?></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-consent="custom"><?= t('บันทึกการตั้งค่า') ?></button>
+        <button type="button" class="btn btn-primary" data-consent="all"><?= t('ยอมรับทั้งหมด') ?></button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php if ($gaId && ($consent['analytics'] ?? false)): ?>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($gaId) ?>"></script>
+  <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '<?= e($gaId) ?>', { anonymize_ip: true });</script>
+<?php endif; ?>
+<?php endif; ?><a href="#" class="back-top" aria-label="<?= t('กลับด้านบน') ?>"><i class="bi bi-arrow-up"></i></a>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="<?= asset('assets/js/main.js') ?>"></script>
 </body>
