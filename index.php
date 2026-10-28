@@ -234,13 +234,12 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
-<?= video_modal() ?>
 <?php endif; ?>
 
-<?php $map = college_map(); ?>
+<?php $map = college_map(); $yt = yt_channel(); $ytVideos = yt_videos(4); ?>
 <section class="section <?= $videos ? '' : 'section-alt' ?>">
   <div class="container">
-    <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
+    <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook วิดีโอจาก YouTube และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
     <div class="row g-4">
       <?php if ($fbUrl): ?>
         <?php
@@ -250,7 +249,7 @@ require __DIR__ . '/includes/header.php';
         $fbPosts = $fbFeatured ? [] : fb_posts(4);
         $feedNews = $fbFeatured || $fbPosts ? [] : q(NEWS_SELECT . " WHERE n.status = 'published' AND n.published_at <= NOW() ORDER BY n.published_at DESC LIMIT 4")->fetchAll();
         ?>
-        <div class="col-lg-5">
+        <div class="col-md-6 col-xl-4">
           <div class="fb-box">
             <div class="fb-head">
               <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=&width=500&height=130&small_header=false&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
@@ -278,7 +277,33 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
       <?php endif; ?>
-      <div class="<?= $fbUrl ? 'col-lg-7' : 'col-12' ?>">
+      <?php if ($yt && $ytVideos): $first = array_shift($ytVideos); ?>
+        <div class="col-md-6 col-xl-4">
+          <div class="yt-box">
+            <div class="yt-head">
+              <?php if ($yt['avatar']): ?><img src="<?= e($yt['avatar']) ?>" alt="" class="yt-avatar" referrerpolicy="no-referrer"><?php endif; ?>
+              <div class="flex-grow-1 min-w-0">
+                <div class="fw-semibold text-truncate"><?= e($yt['title'] ?: 'YouTube') ?></div>
+                <div class="small text-muted"><?= e(preg_replace('#^https://(www\.)?youtube\.com/#', '', $yt['url'])) ?></div>
+              </div>
+              <a href="<?= e($yt['url']) ?>?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-sm btn-yt"><i class="bi bi-youtube"></i> <?= t('ติดตาม') ?></a>
+            </div>
+            <div class="yt-body">
+              <?= video_card($first, true) ?>
+              <div class="yt-list">
+                <?php foreach ($ytVideos as $v): ?>
+                  <a href="#" class="yt-item" data-bs-toggle="modal" data-bs-target="#videoModal" data-yt="<?= e($v['youtube_id']) ?>" data-title="<?= e($v['title']) ?>">
+                    <span class="yt-thumb"><img src="https://i.ytimg.com/vi/<?= e($v['youtube_id']) ?>/mqdefault.jpg" alt="" loading="lazy"><i class="bi bi-play-fill"></i></span>
+                    <span><span class="yt-title"><?= e($v['title']) ?></span><small><?= thai_date($v['time']) ?></small></span>
+                  </a>
+                <?php endforeach; ?>
+              </div>
+            </div>
+            <a class="btn btn-yt yt-more" href="<?= e($yt['url']) ?>/videos" target="_blank" rel="noopener"><i class="bi bi-youtube"></i> <?= t('ดูวิดีโอทั้งหมดบน YouTube') ?></a>
+          </div>
+        </div>
+      <?php endif; ?>
+      <div class="<?= $fbUrl || !empty($first) ? 'col-md-12 col-xl-4' : 'col-12' ?>">
         <div class="map-card">
           <div class="map-frame"><?= media_embed($map['embed'], 'Google Maps', t('แผนที่') . ' ' . $siteName) ?></div>
           <div class="map-info">
@@ -300,4 +325,6 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+<?= $videos || !empty($first) ? video_modal() : '' ?>
+
 <?php require __DIR__ . '/includes/footer.php'; ?>

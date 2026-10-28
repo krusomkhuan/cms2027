@@ -220,3 +220,5 @@ SELECT v.title, v.title_en, '#', 'bi-building', 'province', v.sort_order FROM (
   SELECT 'วิทยาลัยเทคนิคสุวรรณภูมิ', 'Suwannaphum Technical College', 7 UNION ALL
   SELECT 'วิทยาลัยการอาชีพพนมไพร', 'Phanom Phrai Industrial and Community Education College', 8
 ) v WHERE NOT EXISTS (SELECT 1 FROM links l WHERE l.link_group = 'province' AND l.title = v.title);
+-- ช่อง YouTube ของวิทยาลัย
+INSERT INTO settings (skey, svalue) VALUES ('youtube_url', 'https://www.youtube.com/@pr.phonthong') ON DUPLICATE KEY UPDATE svalue = VALUES(svalue);
