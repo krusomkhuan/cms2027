@@ -482,3 +482,14 @@ a:hover { color: var(--primary-dark); }
 .yt-item small { display: block; color: var(--muted); font-size: .72rem; margin-top: .15rem; }
 .yt-more { margin: 0 1rem 1rem; }
 @media (max-width: 1199.98px) { .yt-box, .fb-box { min-height: 0; } }
+/* ---------- การ์ดเว็บไซต์เดิม (ข้างแผนที่) ---------- */
+.oldsite-card { background: #fff; border-radius: .8rem; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,.07); display: flex; flex-direction: column; height: 100%; }
+.oldsite-preview { flex: 1; display: flex; flex-direction: column; background: var(--bg-alt); text-decoration: none; overflow: hidden; min-height: 380px; }
+.oldsite-bar { display: flex; align-items: center; gap: .35rem; padding: .45rem .75rem; background: #e9ecef; font-size: .78rem; color: var(--muted); }
+.oldsite-bar > i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.oldsite-bar > i:nth-child(2) { background: #febc2e; }
+.oldsite-bar > i:nth-child(3) { background: #28c840; }
+.oldsite-bar > span { margin-left: .5rem; background: #fff; border-radius: 1rem; padding: .1rem .75rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oldsite-preview img { flex: 1; width: 100%; object-fit: cover; object-position: top center; transition: transform .4s; min-height: 0; }
+.oldsite-preview:hover img { transform: scale(1.03); }
+.oldsite-ph { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: color-mix(in srgb, var(--primary) 35%, #fff); }

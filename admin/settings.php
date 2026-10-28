@@ -19,6 +19,7 @@ $textFields = [
     'director_position' => 'ตำแหน่งผู้อำนวยการ',
     'director_phone' => 'เบอร์โทรผู้อำนวยการ',
     'map_embed' => 'ลิงก์ Google Maps (Embed)',
+    'old_site_url' => 'ลิงก์เว็บไซต์เดิม (แสดงการ์ดข้างแผนที่หน้าแรก — เว้นว่างเพื่อซ่อน)',
     'director_message' => 'สารจากผู้อำนวยการ (แสดงหน้าแรก)',
     'ticker_text' => 'ข้อความวิ่ง (บรรทัดละ 1 ข้อความ — เว้นว่างเพื่อใช้หัวข้อข่าวปักหมุดแทน)',
 ];
@@ -32,7 +33,7 @@ $enFields = [
     'ticker_text_en' => 'Ticker text (one per line)',
 ];
 $longFields = ['director_message', 'ticker_text', 'director_message_en', 'ticker_text_en'];
-$imageFields = ['logo' => 'ตราสัญลักษณ์ (โลโก้)', 'director_photo' => 'รูปผู้อำนวยการ'];
+$imageFields = ['logo' => 'ตราสัญลักษณ์ (โลโก้)', 'director_photo' => 'รูปผู้อำนวยการ', 'old_site_image' => 'ภาพตัวอย่างเว็บไซต์เดิม'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_save'])) {
     // โพสต์ล่าสุดจาก Facebook (Graph API) — token เว้นว่าง = ใช้ค่าเดิม
@@ -63,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_save'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
     try {
-        foreach (['facebook', 'messenger_url', 'line_url', 'youtube_url', 'admission_url'] as $k) {
+        foreach (['facebook', 'messenger_url', 'line_url', 'youtube_url', 'admission_url', 'old_site_url'] as $k) {
             if (trim($_POST[$k] ?? '') !== '' && !preg_match('#^https?://#i', trim($_POST[$k]))) {
                 throw new RuntimeException('ลิงก์ "' . $textFields[$k] . '" ต้องขึ้นต้นด้วย http:// หรือ https://');
             }
