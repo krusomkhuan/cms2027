@@ -234,3 +234,6 @@ UPDATE links SET title = 'ระบบคลังภาพ Image Hub', title_en
 
 -- ลิงก์ระบบสมัครเรียนออนไลน์ (สอศ.)
 UPDATE links SET url = 'https://admission.vec.go.th/' WHERE title = 'ระบบสมัครเรียนออนไลน์';
+
+-- เปลี่ยน ระบบบริหารสถานศึกษา (RMS) เป็น ระบบสารสนเทศ TeachHub (ลิงก์จะแจ้งภายหลัง)
+UPDATE links SET title = 'ระบบสารสนเทศ TeachHub', title_en = 'TeachHub Information System', icon = 'bi-mortarboard' WHERE title = 'ระบบบริหารสถานศึกษา (RMS)';
