@@ -231,3 +231,6 @@ UPDATE links SET url = 'https://ita.pticec.ac.th/ati/' WHERE title = 'ITA Online
 
 -- เปลี่ยน "ตรวจผลการเรียน" เป็นระบบคลังภาพ Image Hub (ลิงก์จะแจ้งภายหลัง)
 UPDATE links SET title = 'ระบบคลังภาพ Image Hub', title_en = 'Image Hub (Photo Archive)', icon = 'bi-images' WHERE title = 'ตรวจผลการเรียน';
+
+-- ลิงก์ระบบสมัครเรียนออนไลน์ (สอศ.)
+UPDATE links SET url = 'https://admission.vec.go.th/' WHERE title = 'ระบบสมัครเรียนออนไลน์';
