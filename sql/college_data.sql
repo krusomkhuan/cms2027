@@ -225,3 +225,6 @@ INSERT INTO settings (skey, svalue) VALUES ('youtube_url', 'https://www.youtube.
 
 -- เว็บไซต์เดิมของวิทยาลัย (การ์ดข้างแผนที่หน้าแรก)
 INSERT INTO settings (skey, svalue) VALUES ('old_site_url', 'https://www.pticec.ac.th/cms67/') ON DUPLICATE KEY UPDATE svalue = VALUES(svalue);
+
+-- ลิงก์ ITA Online ของวิทยาลัย
+UPDATE links SET url = 'https://ita.pticec.ac.th/ati/' WHERE title = 'ITA Online';
