@@ -237,3 +237,6 @@ UPDATE links SET url = 'https://admission.vec.go.th/' WHERE title = 'ระบ�
 
 -- เปลี่ยน ระบบบริหารสถานศึกษา (RMS) เป็น ระบบสารสนเทศ TeachHub (ลิงก์จะแจ้งภายหลัง)
 UPDATE links SET title = 'ระบบสารสนเทศ TeachHub', title_en = 'TeachHub Information System', icon = 'bi-mortarboard' WHERE title = 'ระบบบริหารสถานศึกษา (RMS)';
+
+-- เปลี่ยน ห้องสมุดออนไลน์ เป็น ระบบคลัง Prompt (PromptHub)
+UPDATE links SET title = 'ระบบคลัง Prompt (PromptHub)', title_en = 'PromptHub (AI Prompt Library)', icon = 'bi-stars', url = 'https://krusomkhuan.com/prompthub/public/' WHERE title = 'ห้องสมุดออนไลน์';
