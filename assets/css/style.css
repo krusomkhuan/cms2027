@@ -429,3 +429,16 @@ a:hover { color: var(--primary-dark); }
 .footer-legal { display: inline-flex; flex-wrap: wrap; gap: .25rem 1rem; }
 .footer-legal a, .footer-legal button { color: rgba(255,255,255,.8); text-decoration: none; background: none; border: 0; padding: 0; font-size: inherit; }
 .footer-legal a:hover, .footer-legal button:hover { color: #fff; text-decoration: underline; }
+/* ---------- แผนที่วิทยาลัย (หน้าแรก คู่กับ Facebook) ---------- */
+.map-card { background: #fff; border-radius: .8rem; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,.07); display: flex; flex-direction: column; height: 100%; min-height: 560px; }
+.map-frame { flex: 1; min-height: 380px; display: flex; }
+.map-frame > iframe, .map-frame > .consent-embed { flex: 1; width: 100%; min-height: 380px; }
+.map-info { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1rem; padding: 1rem 1.25rem; border-top: 4px solid; border-image: var(--grad-line) 1; }
+.map-pin { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem;
+  background-color: var(--accent); background-image: linear-gradient(135deg in oklab, var(--primary), var(--accent)); }
+@media (max-width: 991.98px) { .map-card { min-height: 0; } }
+/* รายชื่อวิทยาลัยในจังหวัด (ท้ายเว็บ): ชื่อที่ยังไม่มีลิงก์ และวิทยาลัยของเราเอง */
+.footer-links li > span { color: rgba(255,255,255,.8); }
+.footer-links li > span::before { content: '\203A'; margin-right: .4rem; color: var(--on-dark); }
+.footer-links li.is-self a, .footer-links li.is-self span { color: #fff; font-weight: 500; }
+.footer-links li.is-self a::before { content: '\25CF'; font-size: .6em; vertical-align: middle; }

@@ -207,3 +207,16 @@ INSERT INTO personnel (prefix, firstname, lastname, position, position_en, type,
   (SELECT id FROM departments WHERE name = 'ฝ่ายวิชาการ' LIMIT 1), 3),
 ('นาย', 'วิสิทธิ์ศักดิ์', 'แสนโสม', 'รองผู้อำนวยการฝ่ายยุทธศาสตร์และแผนงาน', 'Deputy Director for Strategy and Planning', 'executive',
   (SELECT id FROM departments WHERE name = 'ฝ่ายยุทธศาสตร์และแผนงาน' LIMIT 1), 4);
+
+-- ---------- อาชีวศึกษาจังหวัดร้อยเอ็ด (ท้ายเว็บ) — เพิ่มเฉพาะที่ยังไม่มี, URL '#' = ยังไม่ระบุ ----------
+INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
+SELECT v.title, v.title_en, '#', 'bi-building', 'province', v.sort_order FROM (
+  SELECT 'วิทยาลัยเทคนิคร้อยเอ็ด' title, 'Roi Et Technical College' title_en, 1 sort_order UNION ALL
+  SELECT 'วิทยาลัยอาชีวศึกษาร้อยเอ็ด', 'Roi Et Vocational College', 2 UNION ALL
+  SELECT 'วิทยาลัยการอาชีพร้อยเอ็ด', 'Roi Et Industrial and Community Education College', 3 UNION ALL
+  SELECT 'วิทยาลัยเกษตรและเทคโนโลยีร้อยเอ็ด', 'Roi Et College of Agriculture and Technology', 4 UNION ALL
+  SELECT 'วิทยาลัยการอาชีพโพนทอง', 'Phonthong Industrial and Community Education College', 5 UNION ALL
+  SELECT 'วิทยาลัยเทคนิคเกษตรวิสัย', 'Kaset Wisai Technical College', 6 UNION ALL
+  SELECT 'วิทยาลัยเทคนิคสุวรรณภูมิ', 'Suwannaphum Technical College', 7 UNION ALL
+  SELECT 'วิทยาลัยการอาชีพพนมไพร', 'Phanom Phrai Industrial and Community Education College', 8
+) v WHERE NOT EXISTS (SELECT 1 FROM links l WHERE l.link_group = 'province' AND l.title = v.title);

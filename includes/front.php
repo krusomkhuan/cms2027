@@ -95,6 +95,24 @@ function video_modal(): string
 </script>';
 }
 
+/**
+ * ตำแหน่งวิทยาลัยบน Google Maps: ['embed' => URL ฝังแผนที่, 'open' => เปิดใน Google Maps, 'directions' => นำทาง]
+ * ใช้โค้ดฝังจากการตั้งค่า (map_embed) ถ้ามี ไม่เช่นนั้นค้นหาจากชื่อวิทยาลัย (ไม่ต้องใช้ API key)
+ */
+function college_map(): array
+{
+    $place = setting('map_query', setting('site_name', 'วิทยาลัยการอาชีพโพนทอง'));
+    $custom = setting('map_embed');
+    $embed = preg_match('#^https://(www\.google\.com/maps/embed\?|(www\.)?google\.com/maps\?[^"\'<>\s]*output=embed|maps\.google\.com/maps\?[^"\'<>\s]*output=embed)[^"\'<>\s]*$#', $custom)
+        ? $custom
+        : 'https://www.google.com/maps?q=' . urlencode($place) . '&hl=' . (lang() === 'en' ? 'en' : 'th') . '&z=14&output=embed';
+    return [
+        'embed' => $embed,
+        'open' => 'https://www.google.com/maps/search/?api=1&query=' . urlencode($place),
+        'directions' => 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode($place),
+    ];
+}
+
 /** สรุปจำนวนผู้เรียนของภาคเรียนล่าสุด */
 function latest_student_term(): ?array
 {

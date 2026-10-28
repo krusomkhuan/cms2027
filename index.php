@@ -220,35 +220,55 @@ require __DIR__ . '/includes/header.php';
 </section>
 <?php endif; ?>
 
-<?php if ($videos || $fbUrl): ?>
+<?php if ($videos): ?>
 <section class="section section-alt">
   <div class="container">
+    <div class="section-head">
+      <div><h2 class="section-title"><?= t('วิดีทัศน์') ?></h2><p class="section-sub"><?= t('วิดีทัศน์เผยแพร่ข้อมูลวิทยาลัย') ?></p></div>
+      <a href="<?= url('videos.php') ?>" class="btn btn-sm btn-outline-primary"><?= t('ดูทั้งหมด') ?> <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-3">
+      <?php foreach ($videos as $i => $v): ?>
+        <div class="<?= $i === 0 ? 'col-lg-6' : 'col-6 col-lg-2' ?>"><?= video_card($v, $i === 0) ?></div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?= video_modal() ?>
+<?php endif; ?>
+
+<?php $map = college_map(); ?>
+<section class="section <?= $videos ? '' : 'section-alt' ?>">
+  <div class="container">
+    <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
     <div class="row g-4">
-      <?php if ($videos): ?>
-        <div class="<?= $fbUrl ? 'col-lg-8' : 'col-12' ?>">
-          <div class="section-head">
-            <div><h2 class="section-title"><?= t('วิดีทัศน์') ?></h2><p class="section-sub"><?= t('วิดีทัศน์เผยแพร่ข้อมูลวิทยาลัย') ?></p></div>
-            <a href="<?= url('videos.php') ?>" class="btn btn-sm btn-outline-primary"><?= t('ดูทั้งหมด') ?> <i class="bi bi-arrow-right"></i></a>
-          </div>
-          <div class="row g-3">
-            <?php foreach ($videos as $i => $v): ?>
-              <div class="<?= $i === 0 ? 'col-12' : 'col-4' ?>"><?= video_card($v, $i === 0) ?></div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-      <?php endif; ?>
       <?php if ($fbUrl): ?>
-        <div class="<?= $videos ? 'col-lg-4' : 'col-12' ?>">
-          <div class="section-head"><div><h2 class="section-title">Facebook</h2><p class="section-sub"><?= t('ติดตามข่าวสารล่าสุด') ?></p></div></div>
+        <div class="col-lg-5">
           <div class="fb-embed">
             <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=timeline&width=500&height=560&small_header=true&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
           </div>
         </div>
       <?php endif; ?>
+      <div class="<?= $fbUrl ? 'col-lg-7' : 'col-12' ?>">
+        <div class="map-card">
+          <div class="map-frame"><?= media_embed($map['embed'], 'Google Maps', t('แผนที่') . ' ' . $siteName) ?></div>
+          <div class="map-info">
+            <div class="d-flex gap-3 align-items-start">
+              <span class="map-pin"><i class="bi bi-geo-alt-fill"></i></span>
+              <div>
+                <div class="fw-semibold"><?= e($siteName) ?></div>
+                <div class="small text-muted"><?= e(setting_l('address')) ?></div>
+                <?php if (setting('phone')): ?><div class="small text-muted"><i class="bi bi-telephone"></i> <?= e(setting('phone')) ?></div><?php endif; ?>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="<?= e($map['open']) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="bi bi-box-arrow-up-right"></i> <?= t('เปิดใน Google Maps') ?></a>
+              <a href="<?= e($map['directions']) ?>" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm"><i class="bi bi-sign-turn-right"></i> <?= t('นำทาง') ?></a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-<?= $videos ? video_modal() : '' ?>
-<?php endif; ?>
-
 <?php require __DIR__ . '/includes/footer.php'; ?>

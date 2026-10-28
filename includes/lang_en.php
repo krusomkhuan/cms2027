@@ -57,6 +57,10 @@ return [
     'คณะผู้บริหาร' => 'Executive Team',
     'วิดีทัศน์เผยแพร่ข้อมูลวิทยาลัย' => 'Videos about the college',
     'ติดตามข่าวสารล่าสุด' => 'Follow our latest updates',
+    'ติดตามและการเดินทาง' => 'Follow Us & Find Us',
+    'ข่าวสารล่าสุดจาก Facebook และแผนที่ตั้งวิทยาลัย' => 'Latest Facebook updates and the college location',
+    'เปิดใน Google Maps' => 'Open in Google Maps',
+    'นำทาง' => 'Directions',
 
     // ข่าว
     'ข่าวปักหมุด' => 'Pinned',
@@ -159,6 +163,7 @@ return [
     'สำนักงานคณะกรรมการการอาชีวศึกษา กระทรวงศึกษาธิการ' => 'Office of the Vocational Education Commission, Ministry of Education',
     'เมนูลัด' => 'Quick Links',
     'หน่วยงานที่เกี่ยวข้อง' => 'Related Agencies',
+    'อาชีวศึกษาจังหวัดร้อยเอ็ด' => 'Vocational Colleges in Roi Et',
     'สถิติผู้เข้าชมเว็บไซต์' => 'Visitor Statistics',
     'วันนี้' => 'Today',
     'สัปดาห์นี้' => 'This week',

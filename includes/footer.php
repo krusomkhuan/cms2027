@@ -1,5 +1,6 @@
 <?php
 $externalLinks = q("SELECT title, title_en, url FROM links WHERE link_group = 'external' ORDER BY sort_order, id")->fetchAll();
+$provinceLinks = q("SELECT title, title_en, url FROM links WHERE link_group = 'province' ORDER BY sort_order, id")->fetchAll();
 $visits = q("SELECT
     COALESCE(SUM(CASE WHEN visit_date = CURDATE() THEN hits END), 0) AS today,
     COALESCE(SUM(CASE WHEN YEARWEEK(visit_date, 1) = YEARWEEK(CURDATE(), 1) THEN hits END), 0) AS week,
@@ -19,7 +20,7 @@ $phone = setting('phone');
 <footer class="site-footer">
   <div class="container py-5">
     <div class="row g-4">
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="d-flex align-items-center gap-2 mb-3">
           <?php if (setting('logo')): ?>
             <img src="<?= file_url(setting('logo')) ?>" alt="" class="brand-logo">
@@ -49,7 +50,20 @@ $phone = setting('phone');
           <?php if (setting('allow_register', '1') === '1'): ?><li><a href="<?= url('admin/register.php') ?>"><?= t('สมัครสมาชิก (ครู/บุคลากร)') ?></a></li><?php endif; ?>
         </ul>
       </div>
+      <?php if ($provinceLinks): ?>
       <div class="col-sm-6 col-lg-3">
+        <h6 class="footer-title"><?= t('อาชีวศึกษาจังหวัดร้อยเอ็ด') ?></h6>
+        <ul class="list-unstyled footer-links">
+          <?php foreach ($provinceLinks as $l): $self = $l['title'] === setting('site_name'); $href = $self ? url() : (preg_match('#^https?://#i', $l['url']) ? $l['url'] : ''); ?>
+            <li class="<?= $self ? 'is-self' : '' ?>">
+              <?php if ($href): ?><a href="<?= e($href) ?>"<?= $self ? ' aria-current="page"' : ' target="_blank" rel="noopener"' ?>><?= e(tr($l, 'title')) ?></a>
+              <?php else: ?><span><?= e(tr($l, 'title')) ?></span><?php endif; ?>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php endif; ?>
+      <div class="col-sm-6 col-lg-2">
         <h6 class="footer-title"><?= t('หน่วยงานที่เกี่ยวข้อง') ?></h6>
         <ul class="list-unstyled footer-links">
           <?php foreach ($externalLinks as $l): ?>
@@ -57,7 +71,7 @@ $phone = setting('phone');
           <?php endforeach; ?>
         </ul>
       </div>
-      <div class="col-lg-3">
+      <div class="col-sm-6 col-lg-2">
         <h6 class="footer-title"><?= t('สถิติผู้เข้าชมเว็บไซต์') ?></h6>
         <ul class="list-unstyled visit-stats">
           <li><span><i class="bi bi-calendar-day"></i> <?= t('วันนี้') ?></span><b><?= number_format($visits['today']) ?></b></li>

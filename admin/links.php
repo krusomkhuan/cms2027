@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/_layout.php';
 
-$groups = ['eservice' => 'บริการออนไลน์ (E-Service) หน้าแรก', 'external' => 'หน่วยงานที่เกี่ยวข้อง (ท้ายเว็บ)'];
+$groups = ['eservice' => 'บริการออนไลน์ (E-Service) หน้าแรก', 'external' => 'หน่วยงานที่เกี่ยวข้อง (ท้ายเว็บ)', 'province' => 'อาชีวศึกษาจังหวัดร้อยเอ็ด (ท้ายเว็บ — ใส่ # ถ้ายังไม่มีเว็บไซต์)'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();

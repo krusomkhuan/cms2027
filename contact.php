@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $page = q("SELECT * FROM pages WHERE slug = 'contact'")->fetch();
 $pageContent = $page ? tr($page, 'content') : '';
-$mapSrc = preg_match('#^https://(www\.)?google\.com/maps/embed\?[^"\'<>\s]+$#', setting('map_embed')) ? setting('map_embed') : '';
+$mapSrc = college_map()['embed'];
 
 $activeMenu = 'contact';
 $pageTitle = $type === 'complaint' ? t('แจ้งเรื่องร้องเรียน') : t('ติดต่อเรา');
