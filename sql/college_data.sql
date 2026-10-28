@@ -251,3 +251,8 @@ WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบงานบุ
 INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
 SELECT 'ระบบเยี่ยมบ้าน VisitHub', 'VisitHub (Student Home Visit)', '#', 'bi-house-heart', 'eservice', 10
 WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบเยี่ยมบ้าน VisitHub');
+
+-- ปุ่มบริการ ระบบกิจกรรมโฮมรูม HomeroomHub (ลิงก์จะแจ้งภายหลัง)
+INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
+SELECT 'ระบบกิจกรรมโฮมรูม HomeroomHub', 'HomeroomHub (Homeroom Activities)', '#', 'bi-easel2', 'eservice', 11
+WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบกิจกรรมโฮมรูม HomeroomHub');
