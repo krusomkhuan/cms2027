@@ -259,3 +259,8 @@ WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบกิจกร
 
 -- เปลี่ยน ระบบครูที่ปรึกษา เป็น ระบบรายงานวิชาโครงงาน ProjectHub (ลิงก์จะแจ้งภายหลัง)
 UPDATE links SET title = 'ระบบรายงานวิชาโครงงาน ProjectHub', title_en = 'ProjectHub (Student Project Reports)', icon = 'bi-kanban' WHERE title = 'ระบบครูที่ปรึกษา';
+
+-- ปุ่มบริการ ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub (ลิงก์จะแจ้งภายหลัง)
+INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
+SELECT 'ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub', 'CertHub (Training Certificates)', '#', 'bi-award', 'eservice', 12
+WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบจัดเก็บเกียรติบัตรโครงการอบรม CertHub');
