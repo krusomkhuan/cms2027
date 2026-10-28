@@ -243,9 +243,38 @@ require __DIR__ . '/includes/header.php';
     <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
     <div class="row g-4">
       <?php if ($fbUrl): ?>
+        <?php
+        // ปลั๊กอินเพจของ Facebook ไม่แสดงไทม์ไลน์แล้ว จึงใช้เฉพาะส่วนหัว แล้วแสดงโพสต์ล่าสุดเอง (Graph API) หรือข่าวล่าสุดของเว็บแทน
+        // ลำดับ: โพสต์แนะนำที่ผู้ดูแลเลือก → โพสต์ล่าสุดจาก Graph API → ข่าวล่าสุดของเว็บ
+        $fbFeatured = fb_featured();
+        $fbPosts = $fbFeatured ? [] : fb_posts(4);
+        $feedNews = $fbFeatured || $fbPosts ? [] : q(NEWS_SELECT . " WHERE n.status = 'published' AND n.published_at <= NOW() ORDER BY n.published_at DESC LIMIT 4")->fetchAll();
+        ?>
         <div class="col-lg-5">
-          <div class="fb-embed">
-            <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=timeline&width=500&height=560&small_header=true&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
+          <div class="fb-box">
+            <div class="fb-head">
+              <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=&width=500&height=130&small_header=false&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
+            </div>
+            <div class="fb-feed<?= $fbFeatured ? ' fb-feed-embeds' : '' ?>">
+              <div class="fb-feed-title"><i class="bi <?= $fbFeatured || $fbPosts ? 'bi-facebook' : 'bi-newspaper' ?>"></i> <?= $fbFeatured ? t('โพสต์แนะนำ') : ($fbPosts ? t('โพสต์ล่าสุดจากเพจ') : t('ข่าวล่าสุดจากวิทยาลัย')) ?></div>
+              <?php foreach ($fbFeatured as $postUrl): ?>
+                <div class="fb-embed-post"><?= media_embed(fb_post_embed_url($postUrl), 'Facebook', t('โพสต์แนะนำ')) ?></div>
+              <?php endforeach; ?>
+              <?php foreach ($fbPosts as $p): ?>
+                <a class="fb-post" href="<?= e($p['url']) ?>" target="_blank" rel="noopener">
+                  <?php if ($p['image']): ?><img src="<?= e($p['image']) ?>" alt="" loading="lazy" referrerpolicy="no-referrer"><?php endif; ?>
+                  <span><span class="fb-post-text"><?= e(excerpt($p['message'], 140) ?: t('ดูโพสต์บน Facebook')) ?></span><small><i class="bi bi-clock"></i> <?= thai_date($p['time'], true) ?></small></span>
+                </a>
+              <?php endforeach; ?>
+              <?php foreach ($feedNews as $n): ?>
+                <a class="fb-post" href="<?= url('news_view.php?id=' . $n['id']) ?>">
+                  <?php if ($n['cover']): ?><img src="<?= e(file_url($n['cover'])) ?>" alt="" loading="lazy"><?php endif; ?>
+                  <span><span class="fb-post-text"><?= e(tr($n, 'title')) ?></span><small><i class="bi bi-clock"></i> <?= thai_date($n['published_at']) ?></small></span>
+                </a>
+              <?php endforeach; ?>
+              <?php if (!$fbFeatured && !$fbPosts && !$feedNews): ?><p class="text-muted small text-center my-4"><?= t('ติดตามข่าวสารและกิจกรรมล่าสุดได้ที่เพจ Facebook ของวิทยาลัย') ?></p><?php endif; ?>
+            </div>
+            <a class="btn btn-primary fb-more" href="<?= e($fbUrl) ?>" target="_blank" rel="noopener"><i class="bi bi-facebook"></i> <?= t('ดูโพสต์ทั้งหมดบน Facebook') ?></a>
           </div>
         </div>
       <?php endif; ?>

@@ -442,3 +442,24 @@ a:hover { color: var(--primary-dark); }
 .footer-links li > span::before { content: '\203A'; margin-right: .4rem; color: var(--on-dark); }
 .footer-links li.is-self a, .footer-links li.is-self span { color: #fff; font-weight: 500; }
 .footer-links li.is-self a::before { content: '\25CF'; font-size: .6em; vertical-align: middle; }
+/* ---------- กล่อง Facebook: ส่วนหัวเพจ + โพสต์ล่าสุด ---------- */
+.fb-box { background: #fff; border-radius: .8rem; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,.07); display: flex; flex-direction: column; height: 100%; min-height: 560px; }
+.fb-head { height: 130px; display: flex; border-bottom: 1px solid #eee; }
+.fb-head > iframe, .fb-head > .consent-embed { flex: 1; width: 100%; height: 130px; min-height: 130px; }
+.fb-head .consent-embed { padding: .5rem; }
+.fb-head .consent-ph { gap: .3rem; font-size: .82rem; }
+.fb-head .consent-ph > i { font-size: 1.2rem; }
+.fb-feed { flex: 1; padding: .75rem 1rem; display: grid; gap: .25rem; align-content: start; overflow-y: auto; max-height: 360px; }
+.fb-feed-title { font-weight: 500; color: var(--primary); font-size: .92rem; margin-bottom: .25rem; }
+.fb-feed-title .bi-facebook { color: #1877f2; }
+.fb-post { display: flex; gap: .75rem; align-items: flex-start; padding: .55rem; border-radius: .5rem; color: var(--text); text-decoration: none; }
+.fb-post:hover { background: var(--bg-alt); color: var(--text); }
+.fb-post img { width: 72px; height: 72px; object-fit: cover; border-radius: .4rem; flex-shrink: 0; background: var(--bg-alt); }
+.fb-post-text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .88rem; line-height: 1.45; }
+.fb-post small { display: block; color: var(--muted); font-size: .75rem; margin-top: .2rem; }
+.fb-more { margin: 0 1rem 1rem; }
+@media (max-width: 991.98px) { .fb-box { min-height: 0; } .fb-feed { max-height: none; } }
+/* โพสต์แนะนำ (ปลั๊กอินโพสต์ของ Facebook) เลื่อนดูในกล่อง */
+.fb-feed-embeds { max-height: 430px; gap: .75rem; }
+.fb-embed-post { height: 400px; display: flex; border-radius: .5rem; overflow: hidden; background: var(--bg-alt); flex-shrink: 0; }
+.fb-embed-post > iframe, .fb-embed-post > .consent-embed { flex: 1; width: 100%; height: 100%; min-height: 0; }

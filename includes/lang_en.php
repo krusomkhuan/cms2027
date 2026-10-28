@@ -60,6 +60,12 @@ return [
     'ติดตามและการเดินทาง' => 'Follow Us & Find Us',
     'ข่าวสารล่าสุดจาก Facebook และแผนที่ตั้งวิทยาลัย' => 'Latest Facebook updates and the college location',
     'เปิดใน Google Maps' => 'Open in Google Maps',
+    'โพสต์ล่าสุดจากเพจ' => 'Latest posts from our Page',
+    'โพสต์แนะนำ' => 'Featured posts',
+    'ข่าวล่าสุดจากวิทยาลัย' => 'Latest college news',
+    'ดูโพสต์บน Facebook' => 'View post on Facebook',
+    'ดูโพสต์ทั้งหมดบน Facebook' => 'See all posts on Facebook',
+    'ติดตามข่าวสารและกิจกรรมล่าสุดได้ที่เพจ Facebook ของวิทยาลัย' => 'Follow the latest news and activities on the college Facebook Page.',
     'นำทาง' => 'Directions',
 
     // ข่าว

@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // เวอร์ชันของระบบ (Semantic Versioning: MAJOR.MINOR.PATCH) — ดูรายละเอียดใน CHANGELOG.md
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 const DOC_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'jpg', 'jpeg', 'png'];
@@ -61,18 +61,27 @@ function redirect(string $path): never
     exit;
 }
 
-function setting(string $key, string $default = ''): string
+/** ค่าตั้งค่าทั้งหมด โหลดครั้งเดียวต่อการเรียกหน้า (คืนแบบอ้างอิงเพื่อให้ save_setting อัปเดตได้) */
+function &settings_cache(): array
 {
     static $cache = null;
     if ($cache === null) {
         $cache = q('SELECT skey, svalue FROM settings')->fetchAll(PDO::FETCH_KEY_PAIR);
     }
+    return $cache;
+}
+
+function setting(string $key, string $default = ''): string
+{
+    $cache = &settings_cache();
     return isset($cache[$key]) && $cache[$key] !== '' ? $cache[$key] : $default;
 }
 
 function save_setting(string $key, string $value): void
 {
     q('INSERT INTO settings (skey, svalue) VALUES (?, ?) ON DUPLICATE KEY UPDATE svalue = VALUES(svalue)', [$key, $value]);
+    $cache = &settings_cache();
+    $cache[$key] = $value;
 }
 
 /* ---------- ความปลอดภัย ---------- */
