@@ -256,3 +256,6 @@ WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบเยี่ย
 INSERT INTO links (title, title_en, url, icon, link_group, sort_order)
 SELECT 'ระบบกิจกรรมโฮมรูม HomeroomHub', 'HomeroomHub (Homeroom Activities)', '#', 'bi-easel2', 'eservice', 11
 WHERE NOT EXISTS (SELECT 1 FROM links WHERE title = 'ระบบกิจกรรมโฮมรูม HomeroomHub');
+
+-- เปลี่ยน ระบบครูที่ปรึกษา เป็น ระบบรายงานวิชาโครงงาน ProjectHub (ลิงก์จะแจ้งภายหลัง)
+UPDATE links SET title = 'ระบบรายงานวิชาโครงงาน ProjectHub', title_en = 'ProjectHub (Student Project Reports)', icon = 'bi-kanban' WHERE title = 'ระบบครูที่ปรึกษา';
