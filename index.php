@@ -236,7 +236,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 <?php endif; ?>
 
-<?php $map = college_map(); $yt = yt_channel(); $ytVideos = yt_videos(4); ?>
+<?php $map = college_map(); $yt = yt_channel(); $ytVideos = yt_videos(3); ?>
 <section class="section <?= $videos ? '' : 'section-alt' ?>">
   <div class="container">
     <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook วิดีโอจาก YouTube และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
@@ -249,10 +249,10 @@ require __DIR__ . '/includes/header.php';
         $fbPosts = $fbFeatured ? [] : fb_posts(4);
         $feedNews = $fbFeatured || $fbPosts ? [] : q(NEWS_SELECT . " WHERE n.status = 'published' AND n.published_at <= NOW() ORDER BY n.published_at DESC LIMIT 4")->fetchAll();
         ?>
-        <div class="col-lg-6">
+        <div class="col-md-6 col-xl-3">
           <div class="fb-box">
             <div class="fb-head">
-              <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=&width=500&height=130&small_header=false&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
+              <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=&width=340&height=130&small_header=false&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
             </div>
             <div class="fb-feed<?= $fbFeatured ? ' fb-feed-embeds' : '' ?>">
               <div class="fb-feed-title"><i class="bi <?= $fbFeatured || $fbPosts ? 'bi-facebook' : 'bi-newspaper' ?>"></i> <?= $fbFeatured ? t('โพสต์แนะนำ') : ($fbPosts ? t('โพสต์ล่าสุดจากเพจ') : t('ข่าวล่าสุดจากวิทยาลัย')) ?></div>
@@ -278,7 +278,7 @@ require __DIR__ . '/includes/header.php';
         </div>
       <?php endif; ?>
       <?php if ($yt && $ytVideos): $first = array_shift($ytVideos); ?>
-        <div class="col-lg-6">
+        <div class="col-md-6 col-xl-3">
           <div class="yt-box">
             <div class="yt-head">
               <?php if ($yt['avatar']): ?><img src="<?= e($yt['avatar']) ?>" alt="" class="yt-avatar" referrerpolicy="no-referrer"><?php endif; ?>
@@ -304,7 +304,7 @@ require __DIR__ . '/includes/header.php';
         </div>
       <?php endif; ?>
       <?php $oldSite = preg_match('#^https?://#i', setting('old_site_url')) ? setting('old_site_url') : ''; ?>
-      <div class="<?= $oldSite ? 'col-lg-6' : 'col-12' ?>">
+      <div class="col-md-6 col-xl-3">
         <div class="map-card">
           <div class="map-frame"><?= media_embed($map['embed'], 'Google Maps', t('แผนที่') . ' ' . $siteName) ?></div>
           <div class="map-info">
@@ -323,7 +323,7 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
       </div>      <?php if ($oldSite): ?>
-        <div class="col-lg-6">
+        <div class="col-md-6 col-xl-3">
           <div class="oldsite-card">
             <a href="<?= e($oldSite) ?>" target="_blank" rel="noopener" class="oldsite-preview" aria-label="<?= t('เข้าสู่เว็บไซต์เดิม') ?>">
               <span class="oldsite-bar"><i></i><i></i><i></i><span><?= e(preg_replace('#^https?://(www\.)?#', '', rtrim($oldSite, '/'))) ?></span></span>
