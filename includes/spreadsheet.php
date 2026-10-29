@@ -4,11 +4,14 @@
 /** อ่านแถวทั้งหมดจากไฟล์ตามนามสกุล คืน [[cell, cell, ...], ...] */
 function read_table_file(string $path, string $ext): array
 {
-    $rows = match (strtolower($ext)) {
-        'xlsx' => read_xlsx_rows($path),
-        'csv', 'txt' => read_csv_rows($path),
-        default => throw new RuntimeException('รองรับเฉพาะไฟล์ .xlsx หรือ .csv'),
-    };
+    $ext = strtolower($ext);
+    if ($ext === 'xlsx') {
+        $rows = read_xlsx_rows($path);
+    } elseif ($ext === 'csv' || $ext === 'txt') {
+        $rows = read_csv_rows($path);
+    } else {
+        throw new RuntimeException('รองรับเฉพาะไฟล์ .xlsx หรือ .csv');
+    }
     // ตัดช่องว่างหัวท้าย และทิ้งแถวที่ว่างทั้งแถว
     $out = [];
     foreach ($rows as $r) {
@@ -67,11 +70,8 @@ function zip_read_all(string $path): array
 
         $lh = unpack('vnlen/velen', substr($bin, $h['offset'] + 26, 4));
         $raw = substr($bin, $h['offset'] + 30 + $lh['nlen'] + $lh['elen'], $h['csize']);
-        $files[$name] = match ($h['method']) {
-            0 => $raw,
-            8 => gzinflate($raw),
-            default => null,
-        };
+        // 0 = ไม่บีบอัด, 8 = deflate, แบบอื่นไม่รองรับ
+        $files[$name] = $h['method'] === 0 ? $raw : ($h['method'] === 8 ? gzinflate($raw) : null);
     }
     return $files;
 }
@@ -118,12 +118,19 @@ function read_xlsx_rows(string $path): array
                 $col = $col * 26 + (ord($ch) - 64);
             }
             $t = (string) $c['t'];
-            $v = match ($t) {
-                's' => $shared[(int) $c->v] ?? '',
-                'inlineStr' => implode('', array_map('strval', $c->xpath('.//*[local-name()="t"]'))),
-                'b' => ((string) $c->v) === '1' ? 'TRUE' : 'FALSE',
-                default => (string) $c->v,
-            };
+            switch ($t) {
+                case 's':
+                    $v = $shared[(int) $c->v] ?? '';
+                    break;
+                case 'inlineStr':
+                    $v = implode('', array_map('strval', $c->xpath('.//*[local-name()="t"]')));
+                    break;
+                case 'b':
+                    $v = ((string) $c->v) === '1' ? 'TRUE' : 'FALSE';
+                    break;
+                default:
+                    $v = (string) $c->v;
+            }
             // ตัวเลขเต็มที่ Excel เก็บเป็น 12.0 หรือเบอร์โทรที่เป็นตัวเลข
             if ($t === '' && is_numeric($v) && floor((float) $v) == (float) $v && abs((float) $v) < 1e15) {
                 $v = (string) (int) $v;

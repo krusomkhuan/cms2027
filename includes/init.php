@@ -1,6 +1,26 @@
 <?php
 require_once __DIR__ . '/../config.php';
 
+// รองรับเซิร์ฟเวอร์ PHP 7.4: ฟังก์ชันที่มีเฉพาะใน PHP 8
+if (!function_exists('str_starts_with')) {
+    function str_starts_with(string $haystack, string $needle): bool
+    {
+        return $needle === '' || strncmp($haystack, $needle, strlen($needle)) === 0;
+    }
+}
+if (!function_exists('str_ends_with')) {
+    function str_ends_with(string $haystack, string $needle): bool
+    {
+        return $needle === '' || substr($haystack, -strlen($needle)) === $needle;
+    }
+}
+if (!function_exists('str_contains')) {
+    function str_contains(string $haystack, string $needle): bool
+    {
+        return $needle === '' || strpos($haystack, $needle) !== false;
+    }
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_name('cms2027');
     session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
@@ -8,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // เวอร์ชันของระบบ (Semantic Versioning: MAJOR.MINOR.PATCH) — ดูรายละเอียดใน CHANGELOG.md
-const APP_VERSION = '1.5.1';
+const APP_VERSION = '1.5.2';
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 const DOC_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'jpg', 'jpeg', 'png'];
@@ -55,7 +75,7 @@ function asset(string $path): string
     return url($path) . '?v=' . APP_VERSION . (is_file($file) ? '.' . filemtime($file) : '');
 }
 
-function redirect(string $path): never
+function redirect(string $path): void
 {
     header('Location: ' . (str_starts_with($path, 'http') || str_starts_with($path, '/') ? $path : url($path)));
     exit;
