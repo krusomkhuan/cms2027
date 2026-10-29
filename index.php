@@ -103,8 +103,12 @@ require __DIR__ . '/includes/header.php';
     <div class="row g-4 align-items-center">
       <div class="col-md-4 col-lg-3 text-center">
         <div class="director-photo">
-          <?php if (setting('director_photo')): ?>
-            <img src="<?= e(file_url(setting('director_photo'))) ?>" alt="<?= e(setting_l('director_name')) ?>">
+          <?php
+          // รูปจากตั้งค่าเว็บไซต์ ถ้าไม่ได้ตั้ง ใช้รูปของผู้บริหารลำดับแรก (ผู้อำนวยการ) จากเมนูบุคลากร
+          $directorPhoto = setting('director_photo') ?: (string) ($executives[0]['photo'] ?? '');
+          ?>
+          <?php if ($directorPhoto): ?>
+            <img src="<?= e(file_url($directorPhoto)) ?>" alt="<?= e(setting_l('director_name')) ?>">
           <?php else: ?>
             <div class="ph"><i class="bi bi-person-fill"></i></div>
           <?php endif; ?>
