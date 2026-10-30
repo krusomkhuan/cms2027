@@ -28,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // เวอร์ชันของระบบ (Semantic Versioning: MAJOR.MINOR.PATCH) — ดูรายละเอียดใน CHANGELOG.md
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.7.0';
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 const DOC_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'jpg', 'jpeg', 'png'];

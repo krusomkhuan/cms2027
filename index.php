@@ -186,7 +186,7 @@ require __DIR__ . '/includes/header.php';
       <div class="col-6 col-md-3"><a class="stat-box" href="<?= $dash ?>"><div class="num" data-count="<?= $studentTotals['all'] ?>">0</div><div class="lbl"><?= t('ผู้เรียนทั้งหมด (คน)') ?></div><?= $go ?></a></div>
       <div class="col-6 col-md-3"><a class="stat-box" href="<?= $dash ?>"><div class="num" data-count="<?= $studentTotals['ปวช.'] ?? 0 ?>">0</div><div class="lbl"><?= t('ระดับ ปวช. (คน)') ?></div><?= $go ?></a></div>
       <div class="col-6 col-md-3"><a class="stat-box" href="<?= $dash ?>"><div class="num" data-count="<?= $studentTotals['ปวส.'] ?? 0 ?>">0</div><div class="lbl"><?= t('ระดับ ปวส. (คน)') ?></div><?= $go ?></a></div>
-      <div class="col-6 col-md-3"><a class="stat-box" href="<?= url('personnel.php') ?>"><div class="num" data-count="<?= $personnelCount ?>">0</div><div class="lbl"><?= t('ครูและบุคลากร (คน)') ?></div><span class="go"><i class="bi bi-people"></i> <?= t('ดูบุคลากร') ?></span></a></div>
+      <div class="col-6 col-md-3"><a class="stat-box" href="<?= url('personnel_dashboard.php') ?>"><div class="num" data-count="<?= $personnelCount ?>">0</div><div class="lbl"><?= t('ครูและบุคลากร (คน)') ?></div><span class="go"><i class="bi bi-bar-chart-line"></i> <?= t('ดู Dashboard') ?></span></a></div>
     </div>
     <?php if ($term): ?>
       <p class="text-center small opacity-75 mb-0 mt-2"><?= t('ข้อมูลผู้เรียน ภาคเรียนที่') ?> <?= (int) $term['semester'] ?>/<?= (int) $term['academic_year'] - ($isEn ? 543 : 0) ?> · <a class="text-white" href="<?= url('students.php') ?>"><i class="bi bi-bar-chart-line"></i> <?= t('ดู Dashboard ผู้เรียน') ?></a></p>

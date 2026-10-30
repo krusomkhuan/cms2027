@@ -42,6 +42,9 @@ echo page_banner($title, [t('บุคลากร') => url('personnel.php'), $t
 ?>
 <section class="section">
   <div class="container">
+    <div class="text-end mb-3">
+      <a href="<?= url('personnel_dashboard.php') ?>" class="btn btn-outline-primary btn-sm"><i class="bi bi-bar-chart-line"></i> <?= t('Dashboard บุคลากร') ?></a>
+    </div>
     <div class="row g-3 mb-4">
       <?php foreach ($types as $k => $label): ?>
         <div class="col-4">

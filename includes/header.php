@@ -140,6 +140,7 @@ $admissionUrl = preg_match('#^https?://#i', setting('admission_url')) ? setting(
             <ul class="dropdown-menu dropdown-menu-scroll">
               <li><a class="dropdown-item" href="<?= url('personnel.php?type=executive') ?>"><?= t('ผู้บริหารสถานศึกษา') ?></a></li>
               <li><a class="dropdown-item" href="<?= url('personnel.php') ?>"><?= t('บุคลากรทั้งหมด') ?></a></li>
+              <li><a class="dropdown-item" href="<?= url('personnel_dashboard.php') ?>"><i class="bi bi-bar-chart-line"></i> <?= t('Dashboard บุคลากร') ?></a></li>
               <li><hr class="dropdown-divider"></li>
               <li><h6 class="dropdown-header"><?= t('ฝ่าย / แผนกวิชา') ?></h6></li>
               <?php foreach ($menuDepts as $md): ?>

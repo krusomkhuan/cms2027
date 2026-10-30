@@ -130,7 +130,7 @@ echo page_banner($pageTitle, [t('ข้อมูลสถานศึกษา')
               </div>
             </div>
             <div class="col-6">
-              <a class="dash-kpi h-100" href="<?= url('personnel.php') ?>">
+              <a class="dash-kpi h-100" href="<?= url('personnel_dashboard.php') ?>">
                 <div class="ic"><i class="bi bi-person-badge"></i></div>
                 <div>
                   <div class="num"><?= number_format($personnelCount) ?></div>
