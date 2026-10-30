@@ -19,7 +19,7 @@ foreach (q('SELECT id, name, name_en FROM categories ORDER BY sort_order, id') a
 }
 
 $events = q('SELECT * FROM events WHERE COALESCE(end_date, start_date) >= CURDATE() ORDER BY start_date, id LIMIT 5')->fetchAll();
-$videos = q('SELECT * FROM videos WHERE is_active = 1 ORDER BY sort_order, created_at DESC LIMIT 4')->fetchAll();
+$videos = q('SELECT * FROM videos WHERE is_active = 1 ORDER BY sort_order, created_at DESC LIMIT 6')->fetchAll();
 $services = q("SELECT * FROM links WHERE link_group = 'eservice' ORDER BY sort_order, id")->fetchAll();
 
 $term = latest_student_term();
@@ -234,7 +234,7 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="row g-3">
       <?php foreach ($videos as $i => $v): ?>
-        <div class="<?= $i === 0 ? 'col-lg-6' : 'col-6 col-lg-2' ?>"><?= video_card($v, $i === 0) ?></div>
+        <div class="col-6 col-lg-4"><?= video_card($v) ?></div>
       <?php endforeach; ?>
     </div>
   </div>
