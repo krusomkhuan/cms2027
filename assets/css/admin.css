@@ -47,3 +47,4 @@ body { font-family: 'Kanit', sans-serif; font-weight: 300; background: #f3f4f6; 
 
 .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 55%, #000)); padding: 1rem; }
 .login-card { width: 100%; max-width: 400px; }
+.input-stat.is-imported { background: #fff3cd; border-color: #f0ad4e; font-weight: 600; }
