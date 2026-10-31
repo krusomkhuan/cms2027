@@ -246,12 +246,15 @@ function upload_file(string $field, string $subdir, array $allowedExt, int $maxM
     }
     $rel = 'uploads/' . $subdir . '/' . date('Y/m');
     $dir = ROOT_DIR . '/' . $rel;
-    if (!is_dir($dir) && !mkdir($dir, 0775, true)) {
-        throw new RuntimeException('สร้างโฟลเดอร์อัปโหลดไม่ได้');
+    if (!is_dir($dir) && !@mkdir($dir, 0775, true)) {
+        throw new RuntimeException('สร้างโฟลเดอร์ ' . $rel . ' ไม่ได้ — กรุณาตั้งสิทธิ์โฟลเดอร์ uploads ให้เขียนได้ (755 หรือ 777)');
+    }
+    if (!is_writable($dir)) {
+        throw new RuntimeException('โฟลเดอร์ ' . $rel . ' ไม่อนุญาตให้เขียนไฟล์ — กรุณาตั้งสิทธิ์โฟลเดอร์นี้เป็น 755 หรือ 777');
     }
     $name = date('dHis') . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-    if (!move_uploaded_file($f['tmp_name'], $dir . '/' . $name)) {
-        throw new RuntimeException('บันทึกไฟล์ไม่สำเร็จ');
+    if (!@move_uploaded_file($f['tmp_name'], $dir . '/' . $name)) {
+        throw new RuntimeException('บันทึกไฟล์ลง ' . $rel . ' ไม่สำเร็จ — ตรวจสอบสิทธิ์โฟลเดอร์ และพื้นที่ว่างบนเซิร์ฟเวอร์');
     }
     return $rel . '/' . $name;
 }
