@@ -16,7 +16,7 @@ $siteName = $isEn ? setting('site_name_en', setting('site_name')) : setting('sit
 $siteSub = $isEn ? setting('site_name') : setting('site_name_en');
 $menuPages = q('SELECT slug, title, title_en FROM pages WHERE show_in_menu = 1 ORDER BY sort_order, id')->fetchAll();
 $menuCats = q('SELECT id, name, name_en FROM categories ORDER BY sort_order, id')->fetchAll();
-$menuDepts = q('SELECT id, name, name_en, type FROM departments ORDER BY type, sort_order, id')->fetchAll();
+$menuDepts = q('SELECT * FROM departments ORDER BY type, sort_order, id')->fetchAll(); // SELECT * เพราะฐานข้อมูลเดิมอาจยังไม่มีช่อง website
 $colorVars = '';
 foreach (['--primary' => ['theme_color', '#1e3a8a'], '--accent' => ['accent_color', '#d71920']] as $var => [$key, $default]) {
     $c = setting($key, $default);
@@ -149,6 +149,18 @@ $admissionUrl = preg_match('#^https?://#i', setting('admission_url')) ? setting(
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link <?= $activeMenu === 'students' ? 'active' : '' ?>" href="<?= url('students.php') ?>"><?= t('ข้อมูลผู้เรียน') ?></a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><?= t('เว็บไซต์แผนกวิชา') ?></a>
+            <ul class="dropdown-menu dropdown-menu-scroll">
+              <?php foreach ($menuDepts as $md): if ($md['type'] !== 'academic') continue; $site = $md['website'] ?? ''; ?>
+                <?php if ($site): ?>
+                  <li><a class="dropdown-item d-flex justify-content-between gap-3" href="<?= e($site) ?>" target="_blank" rel="noopener"><?= e(tr($md, 'name')) ?> <i class="bi bi-box-arrow-up-right small opacity-50"></i></a></li>
+                <?php else: ?>
+                  <li><a class="dropdown-item" href="<?= url('personnel.php?dept=' . $md['id']) ?>"><?= e(tr($md, 'name')) ?></a></li>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </ul>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle <?= in_array($activeMenu, ['news', 'events', 'videos'], true) ? 'active' : '' ?>" href="#" data-bs-toggle="dropdown"><?= t('ข่าวสาร') ?></a>
             <ul class="dropdown-menu">

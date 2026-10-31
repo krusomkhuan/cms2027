@@ -275,4 +275,5 @@ return [
     'ครู' => 'Teachers',
     'ผู้เรียน' => 'Students',
     'หมายเหตุ: เพศคำนวณจากคำนำหน้าชื่อ และระดับวุฒิคำนวณจากข้อความวุฒิการศึกษาที่บันทึกไว้' => 'Note: gender is derived from name titles and degree level from the recorded qualification text.',
+    'เว็บไซต์แผนกวิชา' => 'Department Websites',
 ];
