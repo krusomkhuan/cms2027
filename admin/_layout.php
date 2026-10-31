@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/init.php';
 $me = require_login();
 
 // ผู้สื่อข่าว (สมาชิกที่สมัครเอง) เข้าได้เฉพาะหน้าข่าวของตัวเองและข้อมูลส่วนตัว
-const REPORTER_PAGES = ['index.php', 'news.php', 'news_form.php', 'profile.php', 'upload_image.php'];
+const REPORTER_PAGES = ['index.php', 'news.php', 'news_form.php', 'profile.php', 'upload_image.php', 'ping.php'];
 if ($me['role'] === 'reporter' && !in_array(basename($_SERVER['SCRIPT_NAME']), REPORTER_PAGES, true)) {
     http_response_code(403);
     exit('สิทธิ์ผู้สื่อข่าวเข้าถึงได้เฉพาะเมนูข่าวสาร');
@@ -133,6 +133,9 @@ function admin_footer(string $extra = ''): void
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // ต่ออายุการเข้าสู่ระบบทุก 5 นาทีขณะเปิดหลังบ้าน (กันหลุดระหว่างเขียนข่าวนาน ๆ)
+  setInterval(() => fetch('<?= url('admin/ping.php') ?>', { credentials: 'same-origin', cache: 'no-store' }).catch(() => {}), 5 * 60 * 1000);
+
   // ยืนยันก่อนลบ
   document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;
@@ -236,15 +239,40 @@ tinymce.init({
       onAction: () => editor.insertContent('<div class="row g-3"><div class="col-md-6"><p>คอลัมน์ซ้าย</p></div><div class="col-md-6"><p>คอลัมน์ขวา</p></div></div><p></p>')
     });
   },
-  images_upload_handler: (blob) => {
+  images_upload_handler: (blob) => shrinkImage(blob.blob(), blob.filename()).then(([file, name]) => {
     const fd = new FormData();
-    fd.append("file", blob.blob(), blob.filename());
+    fd.append("file", file, name);
     fd.append("csrf", "{CSRF}");
-    return fetch("{UPLOAD_URL}", { method: "POST", body: fd })
-      .then((r) => r.json())
+    return fetch("{UPLOAD_URL}", { method: "POST", body: fd, credentials: "same-origin" })
+      .then((r) => r.json().catch(() => ({ error: "อัปโหลดไม่สำเร็จ (" + r.status + ")" })))
       .then((j) => j.location || Promise.reject(j.error || "อัปโหลดไม่สำเร็จ"));
-  }
+  })
 });
+
+// ย่อรูปใหญ่ (เช่น ภาพจากมือถือ) ให้กว้างไม่เกิน 1920px ก่อนอัปโหลด — เร็วขึ้นและไม่ติดขนาดสูงสุดของเซิร์ฟเวอร์
+function shrinkImage(file, name) {
+  const MAX = 1920;
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size < 800 * 1024) {
+    return Promise.resolve([file, name]);
+  }
+  return createImageBitmap(file).then((img) => {
+    const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+    // PNG ใช้ WebP เพื่อคงพื้นหลังโปร่งใส ส่วนรูปถ่ายใช้ JPEG
+    const type = file.type === "image/jpeg" ? "image/jpeg" : "image/webp";
+    return new Promise((ok) => canvas.toBlob((b) => {
+      if (!b || b.size >= file.size) {
+        ok([file, name]);
+      } else {
+        ok([b, name.replace(/\.[^.]+$/, "") + (type === "image/jpeg" ? ".jpg" : ".webp")]);
+      }
+    }, type, 0.85));
+  }).catch(() => [file, name]);
+}
+
 </script>
 HTML, array_map('e', $vars));
 }
