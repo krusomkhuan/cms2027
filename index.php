@@ -199,9 +199,13 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="section-head"><div><h2 class="section-title"><?= t('บริการออนไลน์') ?></h2><p class="section-sub"><?= t('E-Service สำหรับนักเรียน ครู และบุคคลทั่วไป') ?></p></div></div>
     <div class="row g-3">
-      <?php foreach ($services as $s): ?>
+      <?php
+      // สีประจำแต่ละบริการ (วนซ้ำทุก 8 รายการ) [สีหลัก, สีไล่]
+      $svcColors = [['#2563eb', '#60a5fa'], ['#dc2626', '#fb7185'], ['#059669', '#34d399'], ['#ea580c', '#fbbf24'],
+          ['#7c3aed', '#c084fc'], ['#0891b2', '#22d3ee'], ['#db2777', '#f472b6'], ['#4f46e5', '#818cf8']];
+      foreach ($services as $i => $s): [$c1, $c2] = $svcColors[$i % count($svcColors)]; ?>
         <div class="col-6 col-md-4 col-lg-3">
-          <a class="service-item" href="<?= e($s['url']) ?>" target="_blank" rel="noopener"><i class="bi <?= e($s['icon']) ?>"></i><span><?= e(tr($s, 'title')) ?></span></a>
+          <a class="service-item svc-color" style="--c1:<?= $c1 ?>;--c2:<?= $c2 ?>" href="<?= e($s['url']) ?>" target="_blank" rel="noopener"><i class="bi <?= e($s['icon']) ?>"></i><span><?= e(tr($s, 'title')) ?></span></a>
         </div>
       <?php endforeach; ?>
     </div>

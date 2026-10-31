@@ -552,3 +552,19 @@ a.dash-kpi:hover { color: var(--text); transform: translateY(-3px); box-shadow: 
 .dash-rank .bar .m { background: var(--primary); }
 .dash-rank .bar .f { background: var(--accent); }
 .min-w-0 { min-width: 0; }
+
+/* ---------- E-Service: สีประจำแต่ละบริการ (--c1 สีหลัก, --c2 สีไล่ กำหนดใน index.php) ---------- */
+.service-item.svc-color { position: relative; overflow: hidden; border-top: 4px solid var(--c1); }
+.service-item.svc-color::after {
+  content: ''; position: absolute; right: -28px; bottom: -28px; width: 90px; height: 90px; border-radius: 50%;
+  background: var(--c2); opacity: .12; transition: transform .3s, opacity .3s;
+}
+.service-item.svc-color i {
+  position: relative; z-index: 1; border-radius: 1rem; color: #fff;
+  background-color: var(--c1); background-image: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--c1) 35%, transparent);
+}
+.service-item.svc-color span { position: relative; z-index: 1; }
+.service-item.svc-color:hover { color: var(--c1); background: color-mix(in srgb, var(--c1) 6%, #fff); box-shadow: 0 10px 24px color-mix(in srgb, var(--c1) 22%, transparent); }
+.service-item.svc-color:hover i { background-image: linear-gradient(135deg, var(--c2), var(--c1)); transform: rotate(-6deg) scale(1.08); }
+.service-item.svc-color:hover::after { transform: scale(1.6); opacity: .18; }
