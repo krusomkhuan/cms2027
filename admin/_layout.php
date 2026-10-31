@@ -136,6 +136,43 @@ function admin_footer(string $extra = ''): void
   // ต่ออายุการเข้าสู่ระบบทุก 5 นาทีขณะเปิดหลังบ้าน (กันหลุดระหว่างเขียนข่าวนาน ๆ)
   setInterval(() => fetch('<?= url('admin/ping.php') ?>', { credentials: 'same-origin', cache: 'no-store' }).catch(() => {}), 5 * 60 * 1000);
 
+  // ย่อรูปใหญ่ (เช่น ภาพจากมือถือ) ให้กว้างไม่เกิน 1920px ก่อนอัปโหลด — เร็วขึ้นและไม่ติดขนาดสูงสุดของเซิร์ฟเวอร์
+  function shrinkImage(file, name) {
+    const MAX = 1920;
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size < 800 * 1024) {
+      return Promise.resolve([file, name]);
+    }
+    return createImageBitmap(file).then((img) => {
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      // PNG ใช้ WebP เพื่อคงพื้นหลังโปร่งใส ส่วนรูปถ่ายใช้ JPEG
+      const type = file.type === 'image/jpeg' ? 'image/jpeg' : 'image/webp';
+      return new Promise((ok) => canvas.toBlob((b) => {
+        if (!b || b.size >= file.size) {
+          ok([file, name]);
+        } else {
+          ok([b, name.replace(/\.[^.]+$/, '') + (type === 'image/jpeg' ? '.jpg' : '.webp')]);
+        }
+      }, type, 0.85));
+    }).catch(() => [file, name]);
+  }
+
+  // ช่องเลือกรูปทุกช่องในหลังบ้าน (ภาพปก แกลเลอรี สไลด์ รูปบุคลากร): ย่อรูปใหญ่ก่อนส่งฟอร์ม
+  document.querySelectorAll('input[type=file][accept*="image"]').forEach((inp) => {
+    inp.addEventListener('change', () => {
+      if (!window.DataTransfer || ![...inp.files].some((f) => f.size >= 800 * 1024)) return;
+      const btns = inp.form ? inp.form.querySelectorAll('button:not([formnovalidate])') : [];
+      btns.forEach((b) => { b.disabled = true; });
+      Promise.all([...inp.files].map((f) => shrinkImage(f, f.name))).then((list) => {
+        const dt = new DataTransfer();
+        list.forEach(([blob, name]) => dt.items.add(new File([blob], name, { type: blob.type })));
+        inp.files = dt.files;
+      }).finally(() => btns.forEach((b) => { b.disabled = false; }));
+    });
+  });
   // ยืนยันก่อนลบ
   document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;
@@ -186,11 +223,11 @@ tinymce.init({
   plugins: "advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table wordcount emoticons nonbreaking accordion quickbars autosave",
   toolbar: [
     "undo redo | blocks fontfamily fontsize lineheight | bold italic underline strikethrough subscript superscript | forecolor backcolor removeformat",
-    "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | blockquote hr | link image media table accordion | infobox twocol | charmap emoticons insertdatetime | searchreplace visualblocks fullscreen preview code"
+    "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | blockquote hr | link image multiimage media table accordion | infobox twocol | charmap emoticons insertdatetime | searchreplace visualblocks fullscreen preview code"
   ],
   toolbar_sticky: true, toolbar_sticky_offset: 60,
   quickbars_selection_toolbar: "bold italic underline forecolor | quicklink h3 h4 blockquote",
-  quickbars_insert_toolbar: "quickimage quicktable hr",
+  quickbars_insert_toolbar: "quickimage multiimage quicktable hr",
   contextmenu: "link image table",
   block_formats: "ย่อหน้า=p; หัวข้อใหญ่ (H2)=h2; หัวข้อ (H3)=h3; หัวข้อย่อย (H4)=h4; หัวข้อเล็ก (H5)=h5; ข้อความจัดรูปแบบไว้ (Pre)=pre",
   font_family_formats: "Sarabun=Sarabun,sans-serif; Kanit=Kanit,sans-serif; TH Sarabun New=TH Sarabun New,Sarabun,sans-serif; Tahoma=tahoma,sans-serif; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times,serif",
@@ -233,44 +270,67 @@ tinymce.init({
         onAction: () => editor.insertContent(`<div class="alert alert-${type}"><strong>${title}</strong><p class="mb-0">พิมพ์ข้อความที่นี่</p></div><p></p>`)
       })))
     });
+    // แทรกหลายภาพพร้อมกัน
+    editor.ui.registry.addButton("multiimage", {
+      icon: "gallery", tooltip: "แทรกหลายภาพพร้อมกัน",
+      onAction: () => insertMultipleImages(editor)
+    });
+    editor.ui.registry.addMenuItem("multiimage", {
+      icon: "gallery", text: "แทรกหลายภาพพร้อมกัน...",
+      onAction: () => insertMultipleImages(editor)
+    });
     // แทรกเลย์เอาต์ 2 คอลัมน์ (ข้อความ + รูป)
     editor.ui.registry.addButton("twocol", {
       icon: "table-insert-column-after", tooltip: "แทรกเลย์เอาต์ 2 คอลัมน์",
       onAction: () => editor.insertContent('<div class="row g-3"><div class="col-md-6"><p>คอลัมน์ซ้าย</p></div><div class="col-md-6"><p>คอลัมน์ขวา</p></div></div><p></p>')
     });
   },
-  images_upload_handler: (blob) => shrinkImage(blob.blob(), blob.filename()).then(([file, name]) => {
+  images_upload_handler: (blob) => uploadEditorImage(blob.blob(), blob.filename())
+});
+
+/** ย่อรูปแล้วอัปโหลด คืน URL ของรูป */
+function uploadEditorImage(file, filename) {
+  return shrinkImage(file, filename).then(([blob, name]) => {
     const fd = new FormData();
-    fd.append("file", file, name);
+    fd.append("file", blob, name);
     fd.append("csrf", "{CSRF}");
     return fetch("{UPLOAD_URL}", { method: "POST", body: fd, credentials: "same-origin" })
       .then((r) => r.json().catch(() => ({ error: "อัปโหลดไม่สำเร็จ (" + r.status + ")" })))
       .then((j) => j.location || Promise.reject(j.error || "อัปโหลดไม่สำเร็จ"));
-  })
-});
+  });
+}
 
-// ย่อรูปใหญ่ (เช่น ภาพจากมือถือ) ให้กว้างไม่เกิน 1920px ก่อนอัปโหลด — เร็วขึ้นและไม่ติดขนาดสูงสุดของเซิร์ฟเวอร์
-function shrinkImage(file, name) {
-  const MAX = 1920;
-  if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size < 800 * 1024) {
-    return Promise.resolve([file, name]);
-  }
-  return createImageBitmap(file).then((img) => {
-    const scale = Math.min(1, MAX / Math.max(img.width, img.height));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(img.width * scale);
-    canvas.height = Math.round(img.height * scale);
-    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-    // PNG ใช้ WebP เพื่อคงพื้นหลังโปร่งใส ส่วนรูปถ่ายใช้ JPEG
-    const type = file.type === "image/jpeg" ? "image/jpeg" : "image/webp";
-    return new Promise((ok) => canvas.toBlob((b) => {
-      if (!b || b.size >= file.size) {
-        ok([file, name]);
-      } else {
-        ok([b, name.replace(/\.[^.]+$/, "") + (type === "image/jpeg" ? ".jpg" : ".webp")]);
+/** เลือกรูปหลายภาพพร้อมกัน → อัปโหลดทีละภาพ → แทรกเป็นตารางรูป (1 ภาพ = รูปเดี่ยว) */
+function insertMultipleImages(editor) {
+  const picker = document.createElement("input");
+  picker.type = "file";
+  picker.accept = "image/jpeg,image/png,image/gif,image/webp";
+  picker.multiple = true;
+  picker.onchange = async () => {
+    const files = [...picker.files];
+    if (!files.length) return;
+    const bar = editor.notificationManager.open({ text: `กำลังอัปโหลด 0/${files.length} ภาพ`, type: "info", progressBar: true, closeButton: false });
+    const urls = [], errors = [];
+    for (let i = 0; i < files.length; i++) {
+      try {
+        urls.push(await uploadEditorImage(files[i], files[i].name));
+      } catch (err) {
+        errors.push(files[i].name + ": " + err);
       }
-    }, type, 0.85));
-  }).catch(() => [file, name]);
+      bar.progressBar.value(Math.round((i + 1) * 100 / files.length));
+      bar.text(`กำลังอัปโหลด ${i + 1}/${files.length} ภาพ`);
+    }
+    bar.close();
+    if (urls.length === 1) {
+      editor.insertContent(`<p><img src="${urls[0]}" alt="" class="img-fluid"></p>`);
+    } else if (urls.length) {
+      const col = urls.length === 2 || urls.length === 4 ? "col-6" : "col-6 col-md-4";
+      editor.insertContent('<div class="row g-2 img-grid">' + urls.map((u) => `<div class="${col}"><img src="${u}" alt="" class="img-fluid rounded"></div>`).join("") + "</div><p></p>");
+    }
+    if (urls.length) editor.notificationManager.open({ text: `แทรกรูปแล้ว ${urls.length} ภาพ`, type: "success", timeout: 3000 });
+    if (errors.length) editor.notificationManager.open({ text: "อัปโหลดไม่สำเร็จ " + errors.length + " ภาพ — " + errors.join(" · "), type: "error" });
+  };
+  picker.click();
 }
 
 </script>
