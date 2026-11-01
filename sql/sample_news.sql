@@ -1,65 +1,65 @@
 -- ข่าวตัวอย่าง 10 เรื่อง (5 หมวด หมวดละ 2 เรื่อง) สำหรับทดสอบการแสดงผล
--- ภาพปกอยู่ที่ uploads/news/2026/11/sample-news-01.jpg ... 10.jpg (อัปโหลดโฟลเดอร์นี้ขึ้นเซิร์ฟเวอร์ด้วย)
+-- ภาพปกอยู่ที่ uploads/sample/sample-news-01.jpg ... 10.jpg (อัปโหลดโฟลเดอร์นี้ขึ้นเซิร์ฟเวอร์ด้วย)
 -- นำเข้าซ้ำได้ (ข้ามข่าวที่มีหัวข้อเดิมอยู่แล้ว) · ลบข่าวตัวอย่างทั้งหมดด้วย sql/sample_news_delete.sql
 SET NAMES utf8mb4;
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวประชาสัมพันธ์' LIMIT 1), 'วิทยาลัยการอาชีพโพนทองจัดพิธีไหว้ครู ประจำปีการศึกษา 2569', 'นักเรียน นักศึกษาทุกแผนกวิชาร่วมพิธีไหว้ครูเพื่อแสดงความกตัญญูกตเวทิตาต่อครูผู้สอน',
     '<p>วิทยาลัยการอาชีพโพนทอง จัดพิธีไหว้ครู ประจำปีการศึกษา 2569 ณ หอประชุมวิทยาลัย โดยมีผู้บริหาร ครู บุคลากร และนักเรียน นักศึกษาทุกระดับชั้นเข้าร่วม</p><p>ภายในงานมีการประกวดพานไหว้ครูจากแต่ละแผนกวิชา การมอบทุนการศึกษาแก่นักเรียนที่มีผลการเรียนดีและความประพฤติดี และการกล่าวคำปฏิญาณตนของนักเรียน นักศึกษา</p><h3>วัตถุประสงค์ของกิจกรรม</h3><ul><li>ส่งเสริมให้ผู้เรียนแสดงความกตัญญูต่อครูอาจารย์</li><li>สืบสานประเพณีอันดีงามของไทย</li><li>สร้างความสัมพันธ์อันดีระหว่างครูและผู้เรียน</li></ul><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-01.jpg', 0, 'published', 128, '2026-10-21 09:30:00' FROM DUAL
+    'uploads/sample/sample-news-01.jpg', 0, 'published', 128, '2026-10-21 09:30:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'วิทยาลัยการอาชีพโพนทองจัดพิธีไหว้ครู ประจำปีการศึกษา 2569');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวประชาสัมพันธ์' LIMIT 1), 'นักศึกษาแผนกวิชาช่างยนต์ออกให้บริการซ่อมบำรุงรถจักรยานยนต์แก่ชุมชน', 'โครงการศูนย์ซ่อมสร้างเพื่อชุมชน ให้บริการตรวจเช็กและซ่อมบำรุงรถจักรยานยนต์โดยไม่คิดค่าแรง',
     '<p>แผนกวิชาช่างยนต์ วิทยาลัยการอาชีพโพนทอง นำนักศึกษาออกให้บริการตรวจเช็กสภาพและซ่อมบำรุงรถจักรยานยนต์แก่ประชาชนในพื้นที่ อำเภอโพนทอง จังหวัดร้อยเอ็ด ภายใต้โครงการศูนย์ซ่อมสร้างเพื่อชุมชน</p><p>กิจกรรมนี้ช่วยให้นักศึกษาได้ฝึกทักษะวิชาชีพจากการปฏิบัติงานจริง และเป็นการบริการวิชาชีพสู่ชุมชน ประชาชนที่สนใจสามารถติดตามกำหนดการครั้งต่อไปได้ทางเพจ Facebook ของวิทยาลัย</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-02.jpg', 0, 'published', 96, '2026-10-28 10:00:00' FROM DUAL
+    'uploads/sample/sample-news-02.jpg', 0, 'published', 96, '2026-10-28 10:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'นักศึกษาแผนกวิชาช่างยนต์ออกให้บริการซ่อมบำรุงรถจักรยานยนต์แก่ชุมชน');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวประกาศ' LIMIT 1), 'ประกาศกำหนดการสอบปลายภาค ภาคเรียนที่ 2 ปีการศึกษา 2569', 'แจ้งกำหนดการสอบปลายภาคเรียน ระดับ ปวช. และ ปวส. ขอให้นักเรียน นักศึกษาตรวจสอบตารางสอบของตนเอง',
     '<p>งานวัดผลและประเมินผล ฝ่ายวิชาการ แจ้งกำหนดการสอบปลายภาค ภาคเรียนที่ 2 ปีการศึกษา 2569 สำหรับนักเรียนระดับ ปวช. และนักศึกษาระดับ ปวส. ทุกแผนกวิชา</p><div class="alert alert-warning"><strong>สิ่งที่ควรทราบ</strong><p class="mb-0">นักเรียน นักศึกษาต้องแต่งกายถูกระเบียบ และนำบัตรประจำตัวมาแสดงทุกครั้งที่เข้าห้องสอบ</p></div><p>ตรวจสอบตารางสอบรายวิชาได้ที่ระบบลงทะเบียนเรียน (ศธ.02) หรือสอบถามที่งานวัดผลและประเมินผล</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-03.jpg', 0, 'published', 214, '2026-10-24 08:30:00' FROM DUAL
+    'uploads/sample/sample-news-03.jpg', 0, 'published', 214, '2026-10-24 08:30:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'ประกาศกำหนดการสอบปลายภาค ภาคเรียนที่ 2 ปีการศึกษา 2569');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวประกาศ' LIMIT 1), 'ประกาศวันหยุดทำการช่วงเทศกาลปีใหม่ 2570', 'วิทยาลัยปิดทำการตามประกาศวันหยุดราชการ และเปิดทำการตามปกติหลังเทศกาลปีใหม่',
     '<p>วิทยาลัยการอาชีพโพนทอง ขอแจ้งปิดทำการในช่วงเทศกาลปีใหม่ 2570 ตามประกาศวันหยุดราชการ และจะเปิดทำการตามปกติหลังสิ้นสุดวันหยุด</p><p>ในช่วงวันหยุด หากมีเรื่องเร่งด่วนสามารถติดต่อผ่านเพจ Facebook ของวิทยาลัย หรือส่งข้อความผ่านหน้า “ติดต่อเรา” บนเว็บไซต์ เจ้าหน้าที่จะติดต่อกลับเมื่อเปิดทำการ</p><p>ขอให้ทุกท่านเดินทางโดยสวัสดิภาพ</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-04.jpg', 0, 'published', 75, '2026-10-30 14:00:00' FROM DUAL
+    'uploads/sample/sample-news-04.jpg', 0, 'published', 75, '2026-10-30 14:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'ประกาศวันหยุดทำการช่วงเทศกาลปีใหม่ 2570');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวรับสมัคร' LIMIT 1), 'เปิดรับสมัครนักเรียน นักศึกษาใหม่ ระดับ ปวช. และ ปวส. ปีการศึกษา 2570', 'สมัครเรียนได้ทั้งแบบออนไลน์และที่งานทะเบียน เปิดสอน 12 แผนกวิชา พร้อมทุนการศึกษาและหอพัก',
     '<p>วิทยาลัยการอาชีพโพนทอง เปิดรับสมัครนักเรียน นักศึกษาใหม่ ปีการศึกษา 2570 ในระดับประกาศนียบัตรวิชาชีพ (ปวช.) และประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</p><h3>ช่องทางการสมัคร</h3><ul><li>สมัครออนไลน์ผ่านระบบรับสมัครนักเรียนของสำนักงานคณะกรรมการการอาชีวศึกษา</li><li>สมัครด้วยตนเองที่งานทะเบียน วิทยาลัยการอาชีพโพนทอง ในวันและเวลาราชการ</li></ul><h3>หลักฐานการสมัคร</h3><ul><li>สำเนาใบแสดงผลการเรียน</li><li>สำเนาทะเบียนบ้านและบัตรประจำตัวประชาชน</li><li>รูปถ่ายหน้าตรง</li></ul><p>สอบถามรายละเอียดเพิ่มเติม โทร 043-571144</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-05.jpg', 1, 'published', 305, '2026-11-01 08:00:00' FROM DUAL
+    'uploads/sample/sample-news-05.jpg', 1, 'published', 305, '2026-11-01 08:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'เปิดรับสมัครนักเรียน นักศึกษาใหม่ ระดับ ปวช. และ ปวส. ปีการศึกษา 2570');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวรับสมัคร' LIMIT 1), 'รับสมัครผู้สนใจอบรมหลักสูตรระยะสั้น การใช้ AI ช่วยในการทำงาน', 'หลักสูตรสำหรับประชาชนทั่วไป เรียนรู้การใช้เครื่องมือ AI เพื่อเพิ่มประสิทธิภาพการทำงาน ไม่มีค่าใช้จ่าย',
     '<p>วิทยาลัยการอาชีพโพนทอง เปิดรับสมัครประชาชนทั่วไปเข้าอบรมหลักสูตรวิชาชีพระยะสั้น “การใช้ AI ช่วยในการทำงาน” เรียนรู้การเขียนคำสั่ง (Prompt) การสรุปเอกสาร และการสร้างสื่อประชาสัมพันธ์อย่างง่าย</p><div class="alert alert-info"><strong>ข้อมูลเพิ่มเติม</strong><p class="mb-0">ผู้เข้าอบรมครบตามเวลาที่กำหนดจะได้รับเกียรติบัตรจากวิทยาลัย</p></div><p>สมัครได้ที่งานศูนย์บ่มเพาะและอาชีวศึกษาเพื่อชุมชน หรือสอบถามทางเพจ Facebook ของวิทยาลัย</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-06.jpg', 0, 'published', 142, '2026-10-26 11:00:00' FROM DUAL
+    'uploads/sample/sample-news-06.jpg', 0, 'published', 142, '2026-10-26 11:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'รับสมัครผู้สนใจอบรมหลักสูตรระยะสั้น การใช้ AI ช่วยในการทำงาน');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวจัดซื้อจัดจ้าง' LIMIT 1), 'ประกาศเผยแพร่แผนการจัดซื้อจัดจ้าง ประจำปีงบประมาณ พ.ศ. 2570', 'เผยแพร่แผนการจัดซื้อจัดจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',
     '<p>วิทยาลัยการอาชีพโพนทอง ขอเผยแพร่แผนการจัดซื้อจัดจ้าง ประจำปีงบประมาณ พ.ศ. 2570 ตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560</p><p>ผู้ประกอบการที่สนใจสามารถตรวจสอบรายละเอียดได้จากเอกสารแนบ และระบบการจัดซื้อจัดจ้างภาครัฐ (e-GP)</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-07.jpg', 0, 'published', 58, '2026-10-22 13:30:00' FROM DUAL
+    'uploads/sample/sample-news-07.jpg', 0, 'published', 58, '2026-10-22 13:30:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'ประกาศเผยแพร่แผนการจัดซื้อจัดจ้าง ประจำปีงบประมาณ พ.ศ. 2570');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ข่าวจัดซื้อจัดจ้าง' LIMIT 1), 'ประกาศผู้ชนะการเสนอราคา จัดซื้อวัสดุฝึกแผนกวิชาช่างไฟฟ้ากำลัง', 'ประกาศผลการจัดซื้อวัสดุฝึกสำหรับการเรียนการสอน รายละเอียดตามเอกสารประกาศ',
     '<p>ตามที่วิทยาลัยการอาชีพโพนทองได้ดำเนินการจัดซื้อวัสดุฝึกสำหรับการเรียนการสอน แผนกวิชาช่างไฟฟ้ากำลัง นั้น บัดนี้ได้พิจารณาผลการเสนอราคาเรียบร้อยแล้ว</p><p>รายละเอียดผู้ชนะการเสนอราคาและวงเงินตามเอกสารประกาศที่แนบ ทั้งนี้ สามารถตรวจสอบข้อมูลได้ที่ระบบการจัดซื้อจัดจ้างภาครัฐ (e-GP)</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-08.jpg', 0, 'published', 41, '2026-10-29 15:00:00' FROM DUAL
+    'uploads/sample/sample-news-08.jpg', 0, 'published', 41, '2026-10-29 15:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'ประกาศผู้ชนะการเสนอราคา จัดซื้อวัสดุฝึกแผนกวิชาช่างไฟฟ้ากำลัง');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ผลงานและรางวัล' LIMIT 1), 'นักศึกษาคว้ารางวัลการประกวดสิ่งประดิษฐ์ของคนรุ่นใหม่ ระดับจังหวัด', 'ผลงานสิ่งประดิษฐ์ของนักศึกษาได้รับรางวัลและผ่านเข้าสู่การประกวดในระดับภาค',
     '<p>ขอแสดงความยินดีกับนักศึกษาวิทยาลัยการอาชีพโพนทอง ที่ได้รับรางวัลจากการประกวดสิ่งประดิษฐ์ของคนรุ่นใหม่ ระดับจังหวัด และผ่านเข้าสู่การประกวดในระดับภาคต่อไป</p><p>ผลงานดังกล่าวพัฒนาขึ้นจากรายวิชาโครงการ ภายใต้การดูแลของครูที่ปรึกษา โดยมุ่งแก้ปัญหาจริงในชุมชนและนำไปใช้งานได้</p><p>วิทยาลัยขอเป็นกำลังใจให้ทีมนักศึกษาในการแข่งขันระดับต่อไป</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-09.jpg', 0, 'published', 187, '2026-10-25 16:00:00' FROM DUAL
+    'uploads/sample/sample-news-09.jpg', 0, 'published', 187, '2026-10-25 16:00:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'นักศึกษาคว้ารางวัลการประกวดสิ่งประดิษฐ์ของคนรุ่นใหม่ ระดับจังหวัด');
 
 INSERT INTO news (category_id, title, summary, content, cover, is_pinned, status, views, published_at)
   SELECT (SELECT id FROM categories WHERE name = 'ผลงานและรางวัล' LIMIT 1), 'ผลงาน Smart Public Relations System ร่วมนำเสนอในงาน IPITEx 2026', 'ระบบผู้ช่วยประชาสัมพันธ์อัจฉริยะของวิทยาลัย ร่วมนำเสนอในงานแสดงสิ่งประดิษฐ์และนวัตกรรมระดับนานาชาติ',
     '<p>วิทยาลัยการอาชีพโพนทอง นำผลงาน “ระบบผู้ช่วยประชาสัมพันธ์อัจฉริยะ (Smart Public Relations System)” ร่วมนำเสนอในงาน 2026 Bangkok International Intellectual Property, Invention, Innovation and Technology Exposition (IPITEx 2026)</p><p>ระบบนี้ช่วยตอบคำถามและให้ข้อมูลข่าวสารของวิทยาลัยแก่ผู้มาติดต่อและผู้ปกครองได้ตลอดเวลา ชมวิดีโอแนะนำผลงานได้ในส่วน “วิดีทัศน์” ของเว็บไซต์</p><p class="text-muted small mt-4">* ข่าวตัวอย่างสำหรับทดสอบระบบ</p>',
-    'uploads/news/2026/11/sample-news-10.jpg', 1, 'published', 263, '2026-10-31 10:30:00' FROM DUAL
+    'uploads/sample/sample-news-10.jpg', 1, 'published', 263, '2026-10-31 10:30:00' FROM DUAL
   WHERE NOT EXISTS (SELECT 1 FROM news WHERE title = 'ผลงาน Smart Public Relations System ร่วมนำเสนอในงาน IPITEx 2026');
 
