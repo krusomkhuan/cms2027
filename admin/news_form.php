@@ -208,6 +208,23 @@ admin_header($id ? 'แก้ไขข่าว' : 'เพิ่มข่าว'
           <img id="coverPreview" src="<?= e(file_url($n['cover'])) ?>" class="preview-img mb-2 <?= $n['cover'] ? '' : 'd-none' ?>" alt="">
           <input type="file" name="cover" class="form-control" accept="image/*" data-preview="#coverPreview">
           <?php if ($n['cover']): ?><div class="form-check mt-2"><input class="form-check-input" type="checkbox" name="remove_cover" id="rc"><label class="form-check-label small" for="rc">ลบภาพหน้าปก</label></div><?php endif; ?>
+
+          <div class="cover-gen mt-3 pt-3 border-top">
+            <div class="small fw-medium mb-2"><i class="bi bi-magic"></i> สร้างภาพปกอัตโนมัติจากหัวข้อข่าว</div>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <?php foreach (['college' => ['น้ำเงิน-แดง', '#1e3a8a', '#b4232a'], 'navy' => ['น้ำเงิน', '#0b1a3f', '#2b6cb0'], 'red' => ['แดง', '#5c0f14', '#e0565c'], 'green' => ['เขียว', '#064e3b', '#10b981'], 'purple' => ['ม่วง', '#2e1065', '#c026d3']] as $k => [$label, $c1, $c2]): ?>
+                <input type="radio" class="btn-check" name="cover_theme" id="ct_<?= $k ?>" value="<?= $k ?>" <?= $k === 'college' ? 'checked' : '' ?>>
+                <label class="cover-swatch" for="ct_<?= $k ?>" title="<?= $label ?>" style="background:linear-gradient(135deg, <?= $c1 ?>, <?= $c2 ?>)"></label>
+              <?php endforeach; ?>
+            </div>
+            <div class="form-check small mb-2"><input class="form-check-input" type="checkbox" id="coverUsePhoto"><label class="form-check-label" for="coverUsePhoto">ใช้รูปแรกในเนื้อหาเป็นพื้นหลัง</label></div>
+            <button type="button" class="btn btn-sm btn-outline-primary w-100" id="coverGenBtn"
+              data-logo="<?= e(setting('logo') ? file_url(setting('logo')) : '') ?>"
+              data-name="<?= e(setting('site_name', 'วิทยาลัยการอาชีพโพนทอง')) ?>"
+              data-name-en="<?= e(setting('site_name_en', 'Phonthong Industrial and Community Education College')) ?>"
+              data-site="<?= e(preg_replace('#^https?://#', '', rtrim(setting('website', 'www.pticec.ac.th'), '/'))) ?>"><i class="bi bi-image"></i> สร้างภาพปก</button>
+            <div id="coverGenNote" class="form-text text-success d-none"><i class="bi bi-check-circle"></i> สร้างแล้ว — กด “บันทึก” เพื่อใช้เป็นภาพปก (กดสร้างใหม่ได้หลังเปลี่ยนหัวข้อหรือสี)</div>
+          </div>
         </div>
       </div>
 
@@ -225,4 +242,4 @@ admin_header($id ? 'แก้ไขข่าว' : 'เพิ่มข่าว'
     </div>
   </div>
 </form>
-<?php admin_footer(rich_editor_script()); ?>
+<?php admin_footer(rich_editor_script() . '<script src="' . asset('assets/js/cover-generator.js') . '"></script>'); ?>

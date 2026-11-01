@@ -568,3 +568,7 @@ a.dash-kpi:hover { color: var(--text); transform: translateY(-3px); box-shadow: 
 .service-item.svc-color:hover { color: var(--c1); background: color-mix(in srgb, var(--c1) 6%, #fff); box-shadow: 0 10px 24px color-mix(in srgb, var(--c1) 22%, transparent); }
 .service-item.svc-color:hover i { background-image: linear-gradient(135deg, var(--c2), var(--c1)); transform: rotate(-6deg) scale(1.08); }
 .service-item.svc-color:hover::after { transform: scale(1.6); opacity: .18; }
+
+/* ข่าวที่ไม่มีภาพปก: พื้นไล่สีวิทยาลัยแทนกล่องเปล่า */
+.news-card .thumb .ph { background-color: var(--primary); background-image: var(--grad-deep); color: rgba(255,255,255,.85); position: relative; overflow: hidden; }
+.news-card .thumb .ph::after { content: ''; position: absolute; right: -40px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.08); }
