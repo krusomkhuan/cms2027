@@ -20,6 +20,8 @@ $textFields = [
     'director_phone' => 'เบอร์โทรผู้อำนวยการ',
     'map_embed' => 'ลิงก์ Google Maps (Embed)',
     'old_site_url' => 'ลิงก์เว็บไซต์เดิม (แสดงการ์ดข้างแผนที่หน้าแรก — เว้นว่างเพื่อซ่อน)',
+    'model_title' => 'ชื่อภาพโมเดล/อินโฟกราฟิก (การ์ดที่ 5 ในส่วนติดตามและการเดินทาง)',
+    'model_desc' => 'คำอธิบายภาพโมเดล/อินโฟกราฟิก',
     'director_message' => 'สารจากผู้อำนวยการ (แสดงหน้าแรก)',
     'ticker_text' => 'ข้อความวิ่ง (บรรทัดละ 1 ข้อความ — เว้นว่างเพื่อใช้หัวข้อข่าวปักหมุดแทน)',
 ];
@@ -33,7 +35,7 @@ $enFields = [
     'ticker_text_en' => 'Ticker text (one per line)',
 ];
 $longFields = ['director_message', 'ticker_text', 'director_message_en', 'ticker_text_en'];
-$imageFields = ['logo' => 'ตราสัญลักษณ์ (โลโก้)', 'director_photo' => 'รูปผู้อำนวยการ', 'old_site_image' => 'ภาพตัวอย่างเว็บไซต์เดิม'];
+$imageFields = ['logo' => 'ตราสัญลักษณ์ (โลโก้)', 'director_photo' => 'รูปผู้อำนวยการ', 'old_site_image' => 'ภาพตัวอย่างเว็บไซต์เดิม', 'model_image' => 'ภาพโมเดล/อินโฟกราฟิก (เช่น DEKWAD Model — ไม่มีภาพ = ซ่อนการ์ด)'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_save'])) {
     // โพสต์ล่าสุดจาก Facebook (Graph API) — token เว้นว่าง = ใช้ค่าเดิม

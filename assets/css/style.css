@@ -572,3 +572,19 @@ a.dash-kpi:hover { color: var(--text); transform: translateY(-3px); box-shadow: 
 /* ข่าวที่ไม่มีภาพปก: พื้นไล่สีวิทยาลัยแทนกล่องเปล่า */
 .news-card .thumb .ph { background-color: var(--primary); background-image: var(--grad-deep); color: rgba(255,255,255,.85); position: relative; overflow: hidden; }
 .news-card .thumb .ph::after { content: ''; position: absolute; right: -40px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.08); }
+
+/* ---------- การ์ดภาพโมเดล/อินโฟกราฟิก (DEKWAD Model) ในส่วนติดตามและการเดินทาง ---------- */
+.model-card .oldsite-preview { position: relative; background: #fff; cursor: zoom-in; }
+.model-card .oldsite-preview img { object-fit: contain; object-position: center; background: #f6f7fb; padding: .4rem; }
+.model-bar { background-color: var(--primary); background-image: var(--grad-btn); color: #fff; font-weight: 500; }
+.model-bar > i { width: auto; height: auto; background: none !important; font-size: .9rem; }
+.model-bar > span { background: none; color: #fff; margin-left: .2rem; padding: 0; }
+.model-zoom { position: absolute; right: .6rem; bottom: .6rem; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,.55); color: #fff; opacity: 0; transition: opacity .2s; }
+.model-card .oldsite-preview:hover .model-zoom { opacity: 1; }
+.model-card .oldsite-preview:hover img { transform: scale(1.02); }
+@media (min-width: 1200px) {
+  .model-card { height: 480px; }
+}
+@media (max-width: 1199.98px) {
+  .model-card .oldsite-preview img { height: 420px; flex: none; }
+}

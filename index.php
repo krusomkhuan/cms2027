@@ -249,7 +249,13 @@ require __DIR__ . '/includes/header.php';
 <section class="section <?= $videos ? '' : 'section-alt' ?>">
   <div class="container">
     <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook วิดีโอจาก YouTube และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
-    <div class="row g-4">
+    <?php
+    $oldSite = preg_match('#^https?://#i', setting('old_site_url')) ? setting('old_site_url') : '';
+    $modelImage = setting('model_image');
+    // จำนวนกล่องในแถว (จอกว้างแสดงทุกกล่องในแถวเดียว)
+    $followCount = 1 + ($fbUrl ? 1 : 0) + ($yt && $ytVideos ? 1 : 0) + ($oldSite ? 1 : 0) + ($modelImage ? 1 : 0);
+    ?>
+    <div class="row g-4 row-cols-xl-<?= $followCount ?> follow-row">
       <?php if ($fbUrl): ?>
         <?php
         // ปลั๊กอินเพจของ Facebook ไม่แสดงไทม์ไลน์แล้ว จึงใช้เฉพาะส่วนหัว แล้วแสดงโพสต์ล่าสุดเอง (Graph API) หรือข่าวล่าสุดของเว็บแทน
@@ -258,7 +264,7 @@ require __DIR__ . '/includes/header.php';
         $fbPosts = $fbFeatured ? [] : fb_posts(4);
         $feedNews = $fbFeatured || $fbPosts ? [] : q(NEWS_SELECT . " WHERE n.status = 'published' AND n.published_at <= NOW() ORDER BY n.published_at DESC LIMIT 4")->fetchAll();
         ?>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6">
           <div class="fb-box">
             <div class="fb-head">
               <?= media_embed('https://www.facebook.com/plugins/page.php?href=' . urlencode($fbUrl) . '&tabs=&width=340&height=130&small_header=false&adapt_container_width=true&hide_cover=false&locale=' . ($isEn ? 'en_US' : 'th_TH'), 'Facebook', 'Facebook Page') ?>
@@ -287,7 +293,7 @@ require __DIR__ . '/includes/header.php';
         </div>
       <?php endif; ?>
       <?php if ($yt && $ytVideos): $first = array_shift($ytVideos); ?>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6">
           <div class="yt-box">
             <div class="yt-head">
               <?php if ($yt['avatar']): ?><img src="<?= e($yt['avatar']) ?>" alt="" class="yt-avatar" referrerpolicy="no-referrer"><?php endif; ?>
@@ -312,8 +318,7 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
       <?php endif; ?>
-      <?php $oldSite = preg_match('#^https?://#i', setting('old_site_url')) ? setting('old_site_url') : ''; ?>
-      <div class="col-md-6 col-xl-3">
+      <div class="col-md-6">
         <div class="map-card">
           <div class="map-frame"><?= media_embed($map['embed'], 'Google Maps', t('แผนที่') . ' ' . $siteName) ?></div>
           <div class="map-info">
@@ -332,7 +337,7 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
       </div>      <?php if ($oldSite): ?>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6">
           <div class="oldsite-card">
             <a href="<?= e($oldSite) ?>" target="_blank" rel="noopener" class="oldsite-preview" aria-label="<?= t('เข้าสู่เว็บไซต์เดิม') ?>">
               <span class="oldsite-bar"><i></i><i></i><i></i><span><?= e(preg_replace('#^https?://(www\.)?#', '', rtrim($oldSite, '/'))) ?></span></span>
@@ -355,10 +360,41 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
       <?php endif; ?>
+      <?php if ($modelImage): $modelTitle = setting_l('model_title') ?: 'DEKWAD MODEL of PTICEC'; ?>
+        <div class="col-md-6">
+          <div class="oldsite-card model-card">
+            <a href="#" class="oldsite-preview" data-bs-toggle="modal" data-bs-target="#modelModal" aria-label="<?= t('ดูภาพขนาดเต็ม') ?>">
+              <span class="oldsite-bar model-bar"><i class="bi bi-diagram-3"></i><span><?= e($modelTitle) ?></span></span>
+              <img src="<?= e(file_url($modelImage)) ?>" alt="<?= e($modelTitle) ?>" loading="lazy">
+              <span class="model-zoom"><i class="bi bi-arrows-fullscreen"></i></span>
+            </a>
+            <div class="map-info">
+              <div class="d-flex gap-3 align-items-start">
+                <span class="map-pin"><i class="bi bi-diagram-3"></i></span>
+                <div>
+                  <div class="fw-semibold"><?= e($modelTitle) ?></div>
+                  <div class="small text-muted"><?= e(setting_l('model_desc') ?: t('รูปแบบการส่งเสริมคุณธรรมจริยธรรม และคุณลักษณะอันพึงประสงค์ของผู้เรียน')) ?></div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modelModal"><i class="bi bi-zoom-in"></i> <?= t('ดูภาพขนาดเต็ม') ?></button>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
 
     </div>
   </div>
 </section>
+<?php if ($modelImage): ?>
+  <div class="modal fade" id="modelModal" tabindex="-1" aria-label="<?= e($modelTitle) ?>">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header py-2"><h5 class="modal-title fs-6"><?= e($modelTitle) ?></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body p-0 text-center bg-light"><img src="<?= e(file_url($modelImage)) ?>" alt="<?= e($modelTitle) ?>" class="img-fluid"></div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
 <?= $videos || !empty($first) ? video_modal() : '' ?>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
