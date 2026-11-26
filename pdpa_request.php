@@ -70,7 +70,6 @@ echo page_banner($pageTitle, [t('นโยบายคุ้มครองข�
           <div class="small">
             <div class="mb-1"><?= e(setting('dpo_name')) ?></div>
             <?php if (setting('dpo_email')): ?><div class="mb-1"><i class="bi bi-envelope"></i> <a href="mailto:<?= e(setting('dpo_email')) ?>"><?= e(setting('dpo_email')) ?></a></div><?php endif; ?>
-            <?php if (setting('dpo_phone')): ?><div><i class="bi bi-telephone"></i> <?= e(setting('dpo_phone')) ?></div><?php endif; ?>
           </div>
           <hr>
           <p class="small text-muted mb-0"><?= t('วิทยาลัยจะพิจารณาและแจ้งผลภายใน 30 วันนับจากวันที่ได้รับคำร้อง อาจขอเอกสารยืนยันตัวตนเพิ่มเติมก่อนดำเนินการ') ?></p>

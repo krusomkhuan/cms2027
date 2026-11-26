@@ -120,7 +120,6 @@ require __DIR__ . '/includes/header.php';
         <blockquote class="director-quote"><?= nl2br(e(setting_l('director_message'))) ?></blockquote>
         <div class="fw-semibold fs-5"><?= e(setting_l('director_name')) ?></div>
         <div class="text-muted"><?= e(setting_l('director_position')) ?></div>
-        <?php if (setting('director_phone')): ?><div class="text-muted small mt-1"><i class="bi bi-telephone"></i> <?= e(setting('director_phone')) ?></div><?php endif; ?>
       </div>
     </div>
   </div>
@@ -174,6 +173,31 @@ require __DIR__ . '/includes/header.php';
           <?php if (!$events): ?><p class="text-muted m-0"><?= t('ยังไม่มีกิจกรรมที่กำลังจะมาถึง') ?></p><?php endif; ?>
           <a href="<?= url('events.php') ?>" class="btn btn-primary w-100 mt-2"><i class="bi bi-calendar3"></i> <?= t('ดูปฏิทินทั้งหมด') ?></a>
         </div></div>
+        <?php $rcUrl = setting('rchannel_url', RCHANNEL_DEFAULT_URL); $rc = yt_channel($rcUrl, 'rc_'); $rcVideos = $rc ? yt_videos(1, $rcUrl, 'rc_') : []; ?>
+        <div class="rc-box mt-4">
+          <a class="rc-banner" href="<?= e($rcUrl) ?>" target="_blank" rel="noopener">
+            <span class="rc-logo">R<span>-</span>Channel</span>
+            <span class="rc-sub"><?= t('สถานีโทรทัศน์เพื่อการศึกษาและพัฒนาอาชีพ') ?></span>
+          </a>
+          <div class="rc-body">
+            <div class="d-flex align-items-center gap-2">
+              <?php if ($rc && $rc['avatar']): ?><img src="<?= e($rc['avatar']) ?>" alt="" class="rc-avatar" referrerpolicy="no-referrer"><?php else: ?><span class="rc-avatar rc-avatar-icon"><i class="bi bi-broadcast"></i></span><?php endif; ?>
+              <div class="flex-grow-1 min-w-0">
+                <div class="fw-semibold text-truncate"><?= e(($rc['title'] ?? '') ?: 'R-Channel') ?></div>
+                <div class="small text-muted text-truncate"><?= e(preg_replace('#^https://(www\.)?youtube\.com/#', '', $rcUrl)) ?></div>
+              </div>
+              <a href="<?= e($rcUrl) ?>?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-sm btn-yt flex-shrink-0"><i class="bi bi-youtube"></i> <?= t('ติดตาม') ?></a>
+            </div>
+            <?php if ($rcVideos): ?>
+              <div class="small text-muted mt-3 mb-1"><i class="bi bi-play-btn"></i> <?= t('ล่าสุดจากช่อง') ?></div>
+              <?= video_card($rcVideos[0]) ?>
+            <?php endif; ?>
+            <div class="d-flex gap-2 mt-3">
+              <a href="<?= e($rcUrl) ?>/streams" target="_blank" rel="noopener" class="btn btn-yt flex-fill"><i class="bi bi-broadcast"></i> <?= t('ไลฟ์สด') ?></a>
+              <a href="<?= e($rcUrl) ?>/videos" target="_blank" rel="noopener" class="btn btn-outline-secondary flex-fill"><i class="bi bi-collection-play"></i> <?= t('วิดีโอทั้งหมด') ?></a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -250,10 +274,9 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="section-head"><div><h2 class="section-title"><?= t('ติดตามและการเดินทาง') ?></h2><p class="section-sub"><?= t('ข่าวสารล่าสุดจาก Facebook วิดีโอจาก YouTube และแผนที่ตั้งวิทยาลัย') ?></p></div></div>
     <?php
-    $oldSite = preg_match('#^https?://#i', setting('old_site_url')) ? setting('old_site_url') : '';
     $modelImage = setting('model_image');
     // จำนวนกล่องในแถว (จอกว้างแสดงทุกกล่องในแถวเดียว)
-    $followCount = 1 + ($fbUrl ? 1 : 0) + ($yt && $ytVideos ? 1 : 0) + ($oldSite ? 1 : 0) + ($modelImage ? 1 : 0);
+    $followCount = 1 + ($fbUrl ? 1 : 0) + ($yt && $ytVideos ? 1 : 0) + ($modelImage ? 1 : 0);
     ?>
     <div class="row g-4 row-cols-xl-<?= $followCount ?> follow-row">
       <?php if ($fbUrl): ?>
@@ -327,7 +350,6 @@ require __DIR__ . '/includes/header.php';
               <div>
                 <div class="fw-semibold"><?= e($siteName) ?></div>
                 <div class="small text-muted"><?= e(setting_l('address')) ?></div>
-                <?php if (setting('phone')): ?><div class="small text-muted"><i class="bi bi-telephone"></i> <?= e(setting('phone')) ?></div><?php endif; ?>
               </div>
             </div>
             <div class="d-flex flex-wrap gap-2">
@@ -336,30 +358,7 @@ require __DIR__ . '/includes/header.php';
             </div>
           </div>
         </div>
-      </div>      <?php if ($oldSite): ?>
-        <div class="col-md-6">
-          <div class="oldsite-card">
-            <a href="<?= e($oldSite) ?>" target="_blank" rel="noopener" class="oldsite-preview" aria-label="<?= t('เข้าสู่เว็บไซต์เดิม') ?>">
-              <span class="oldsite-bar"><i></i><i></i><i></i><span><?= e(preg_replace('#^https?://(www\.)?#', '', rtrim($oldSite, '/'))) ?></span></span>
-              <?php if (setting('old_site_image')): ?>
-                <img src="<?= e(file_url(setting('old_site_image'))) ?>" alt="<?= t('ภาพตัวอย่างเว็บไซต์เดิม') ?>" loading="lazy">
-              <?php else: ?>
-                <span class="oldsite-ph"><i class="bi bi-globe2"></i></span>
-              <?php endif; ?>
-            </a>
-            <div class="map-info">
-              <div class="d-flex gap-3 align-items-start">
-                <span class="map-pin"><i class="bi bi-globe2"></i></span>
-                <div>
-                  <div class="fw-semibold"><?= t('เว็บไซต์เดิมของวิทยาลัย') ?></div>
-                  <div class="small text-muted"><?= t('ข้อมูล เอกสาร และข่าวสารย้อนหลังของวิทยาลัยการอาชีพโพนทอง') ?></div>
-                </div>
-              </div>
-              <a href="<?= e($oldSite) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="bi bi-box-arrow-up-right"></i> <?= t('เข้าสู่เว็บไซต์เดิม') ?></a>
-            </div>
-          </div>
-        </div>
-      <?php endif; ?>
+      </div>
       <?php if ($modelImage): $modelTitle = setting_l('model_title') ?: 'DEKWAD MODEL of PTICEC'; ?>
         <div class="col-md-6">
           <div class="oldsite-card model-card">
@@ -395,6 +394,6 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
 <?php endif; ?>
-<?= $videos || !empty($first) ? video_modal() : '' ?>
+<?= $videos || !empty($first) || !empty($rcVideos) ? video_modal() : '' ?>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

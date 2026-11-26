@@ -66,7 +66,6 @@ echo page_banner($pageTitle, [$pageTitle => null]);
           <?php if (trim(strip_tags($pageContent)) !== ''): ?><div class="article mb-3"><?= $pageContent ?></div><?php endif; ?>
           <div class="d-flex gap-3 mb-3"><i class="bi bi-building fs-4 text-danger"></i><div><div class="fw-medium"><?= e($siteName) ?></div><div class="small text-muted"><?= t('สำนักงานคณะกรรมการการอาชีวศึกษา') ?></div></div></div>
           <div class="d-flex gap-3 mb-3"><i class="bi bi-geo-alt fs-4 text-danger"></i><div><div class="fw-medium"><?= t('ที่อยู่') ?></div><?= e(setting_l('address')) ?></div></div>
-          <div class="d-flex gap-3 mb-3"><i class="bi bi-telephone fs-4 text-danger"></i><div><div class="fw-medium"><?= t('โทรศัพท์') ?></div><?= e(setting('phone', '-')) ?></div></div>
           <div class="d-flex gap-3 mb-3"><i class="bi bi-envelope fs-4 text-danger"></i><div><div class="fw-medium"><?= t('อีเมล') ?></div><?= e(setting('email', '-')) ?></div></div>
           <?php if (setting('facebook')): ?><div class="d-flex gap-3 mb-3"><i class="bi bi-facebook fs-4 text-danger"></i><div><div class="fw-medium">Facebook</div><a href="<?= e(setting('facebook')) ?>" target="_blank" rel="noopener" class="text-break"><?= e(preg_replace('#^https?://(www\.)?#', '', setting('facebook'))) ?></a></div></div><?php endif; ?>
           <p class="small text-muted mb-0"><?= t('เวลาทำการ: วันจันทร์–ศุกร์ 08:30–16:30 น. (เว้นวันหยุดราชการ)') ?></p>

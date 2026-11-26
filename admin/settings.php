@@ -14,6 +14,7 @@ $textFields = [
     'messenger_url' => 'ลิงก์แชท Messenger (เว้นว่าง = สร้างจากเพจ Facebook อัตโนมัติ เช่น https://m.me/pr.phonthong)',
     'line_url' => 'ลิงก์ LINE Official (เช่น https://lin.ee/...)',
     'youtube_url' => 'ลิงก์ช่อง YouTube',
+    'rchannel_url' => 'ลิงก์ช่อง R-Channel บน YouTube (การ์ดใต้ปฏิทินหน้าแรก — เว้นว่าง = https://www.youtube.com/@rchannelevent7917)',
     'admission_url' => 'ลิงก์ระบบสมัครเรียนออนไลน์ (แสดงปุ่ม “สมัครเรียนออนไลน์”)',
     'director_name' => 'ชื่อผู้อำนวยการ',
     'director_position' => 'ตำแหน่งผู้อำนวยการ',
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_save'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
     try {
-        foreach (['facebook', 'messenger_url', 'line_url', 'youtube_url', 'admission_url', 'old_site_url'] as $k) {
+        foreach (['facebook', 'messenger_url', 'line_url', 'youtube_url', 'rchannel_url', 'admission_url', 'old_site_url'] as $k) {
             if (trim($_POST[$k] ?? '') !== '' && !preg_match('#^https?://#i', trim($_POST[$k]))) {
                 throw new RuntimeException('ลิงก์ "' . $textFields[$k] . '" ต้องขึ้นต้นด้วย http:// หรือ https://');
             }
@@ -111,7 +112,7 @@ admin_header('ตั้งค่าเว็บไซต์', 'settings');
       <div class="card"><div class="card-header">ข้อมูลทั่วไป</div><div class="card-body">
         <div class="row g-3">
           <?php foreach ($textFields as $k => $label): ?>
-            <div class="<?= in_array($k, ['phone', 'email', 'director_name', 'director_position', 'facebook', 'messenger_url', 'line_url', 'youtube_url', 'director_phone'], true) ? 'col-md-6' : 'col-12' ?>">
+            <div class="<?= in_array($k, ['phone', 'email', 'director_name', 'director_position', 'facebook', 'messenger_url', 'line_url', 'youtube_url', 'rchannel_url', 'director_phone'], true) ? 'col-md-6' : 'col-12' ?>">
               <label class="form-label" for="<?= $k ?>"><?= e($label) ?></label>
               <?php if (in_array($k, $longFields, true)): ?>
                 <textarea class="form-control" id="<?= $k ?>" name="<?= $k ?>" rows="4"><?= e(setting($k)) ?></textarea>

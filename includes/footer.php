@@ -13,7 +13,6 @@ $messengerUrl = preg_match('#^https?://#i', setting('messenger_url')) ? setting(
 if (!$messengerUrl && preg_match('#facebook\.com/([A-Za-z0-9.\-]+)/?$#i', $fbUrl, $fbm)) {
     $messengerUrl = 'https://m.me/' . $fbm[1];
 }
-$phone = setting('phone');
 ?>
 </main>
 
@@ -34,7 +33,6 @@ $phone = setting('phone');
         </div>
         <p class="small opacity-75 mb-2"><?= t('สำนักงานคณะกรรมการการอาชีวศึกษา กระทรวงศึกษาธิการ') ?></p>
         <p class="mb-1"><i class="bi bi-geo-alt me-1"></i> <?= e(setting_l('address')) ?></p>
-        <?php if (setting('phone')): ?><p class="mb-1"><i class="bi bi-telephone me-1"></i> <?= e(setting('phone')) ?></p><?php endif; ?>
         <?php if (setting('email')): ?><p class="mb-1"><i class="bi bi-envelope me-1"></i> <?= e(setting('email')) ?></p><?php endif; ?>
       </div>
       <div class="col-sm-6 col-lg-2">
@@ -92,10 +90,14 @@ $phone = setting('phone');
         <a href="<?= url('pdpa_request.php') ?>"><?= t('ใช้สิทธิ์เจ้าของข้อมูล') ?></a>
       </span>
     </div>
+    <div class="container mt-2 small">
+      <div><?= t('ผู้พัฒนาระบบ') ?>: <span lang="th">ครูสมควร สากำ</span></div>
+      <div><?= t('หัวหน้าแผนกวิชาคอมพิวเตอร์และเทคโนโลยีธุรกิจดิจิทัล') ?></div>
+    </div>
   </div>
 </footer>
 
-<?php if ($messengerUrl || $fbUrl || $lineUrl || $phone): ?>
+<?php if ($messengerUrl || $fbUrl || $lineUrl): ?>
 <div class="contact-fab" id="contactFab">
   <div class="contact-panel" id="contactPanel" role="dialog" aria-label="<?= t('ติดต่อวิทยาลัย') ?>" hidden>
     <div class="contact-panel-head">
@@ -111,9 +113,6 @@ $phone = setting('phone');
       <?php endif; ?>
       <?php if ($lineUrl): ?>
         <a href="<?= e($lineUrl) ?>" target="_blank" rel="noopener" class="cp-item"><span class="cp-ic line"><i class="bi bi-line"></i></span><span><b>LINE</b><small><?= t('เพิ่มเพื่อนเพื่อรับข่าวสาร') ?></small></span></a>
-      <?php endif; ?>
-      <?php if ($phone): ?>
-        <a href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone)) ?>" class="cp-item"><span class="cp-ic phone"><i class="bi bi-telephone-fill"></i></span><span><b><?= t('โทรหาวิทยาลัย') ?></b><small><?= e($phone) ?></small></span></a>
       <?php endif; ?>
       <a href="<?= url('contact.php#form') ?>" class="cp-item"><span class="cp-ic form"><i class="bi bi-envelope-fill"></i></span><span><b><?= t('ส่งข้อความถึงวิทยาลัย') ?></b><small><?= t('ผ่านแบบฟอร์มบนเว็บไซต์') ?></small></span></a>
     </div>

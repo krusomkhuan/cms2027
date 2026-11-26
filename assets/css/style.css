@@ -588,3 +588,15 @@ a.dash-kpi:hover { color: var(--text); transform: translateY(-3px); box-shadow: 
 @media (max-width: 1199.98px) {
   .model-card .oldsite-preview img { height: 420px; flex: none; }
 }
+/* ---------- การ์ดช่อง R-Channel (ใต้ปฏิทินกิจกรรม หน้าแรก) ---------- */
+.rc-box { background: #fff; border-radius: .8rem; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,.07); }
+.rc-banner { display: block; padding: 1.1rem 1rem .9rem; text-align: center; text-decoration: none; color: #fff;
+  background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.18), transparent 45%), linear-gradient(120deg, #13235f 0%, #1e3a8a 45%, #b3122a 100%); }
+.rc-banner:hover { color: #fff; filter: brightness(1.08); }
+.rc-logo { display: block; font-family: Kanit, sans-serif; font-weight: 600; font-size: 2rem; line-height: 1; letter-spacing: -.02em; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
+.rc-logo span { color: #ff4d5e; }
+.rc-sub { display: block; margin-top: .4rem; font-size: .85rem; opacity: .92; }
+.rc-body { padding: 1rem; }
+.rc-avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #f1d2d6; }
+.rc-avatar-icon { display: inline-flex; align-items: center; justify-content: center; background: #b3122a; color: #fff; font-size: 1.2rem; }
+.rc-body .video-card .vtitle { font-size: .9rem; }

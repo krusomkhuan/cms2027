@@ -34,7 +34,7 @@ $theme = setting('theme_color', '#1e3a8a');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>เข้าสู่ระบบ | <?= e(setting('site_name')) ?></title>
-  <?php if (setting('favicon', setting('logo'))): ?><link rel="icon" type="image/png" href="<?= e(file_url(setting('favicon', setting('logo')))) ?>"><?php endif; ?>
+  <?= site_icon_tags() ?>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">

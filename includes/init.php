@@ -28,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // เวอร์ชันของระบบ (Semantic Versioning: MAJOR.MINOR.PATCH) — ดูรายละเอียดใน CHANGELOG.md
-const APP_VERSION = '1.11.0';
+const APP_VERSION = '1.13.0';
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 const DOC_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'jpg', 'jpeg', 'png'];
@@ -73,6 +73,26 @@ function asset(string $path): string
 {
     $file = ROOT_DIR . '/' . ltrim($path, '/');
     return url($path) . '?v=' . APP_VERSION . (is_file($file) ? '.' . filemtime($file) : '');
+}
+
+/** แท็กไอคอนเว็บใน <head>: ชุดไอคอนใน assets/icons หรือโลโก้ที่แอดมินอัปโหลดใหม่ (ถ้ามี) */
+function site_icon_tags(): string
+{
+    $current = setting('favicon', setting('logo'));
+    if (!$current) {
+        return '';
+    }
+    // ชุดไอคอนสร้างจากโลโก้เดิม — ถ้าเปลี่ยนโลโก้แล้วต้องใช้ไฟล์ใหม่แทน ไม่ให้ไอคอนเก่าค้าง
+    if (!in_array(basename($current), ['favicon-v2.png', 'logo-v2.png'], true)) {
+        return '<link rel="icon" href="' . e(file_url($current)) . '">';
+    }
+    return implode("\n  ", [
+        '<link rel="icon" href="' . e(asset('assets/icons/favicon.ico')) . '" sizes="48x48">',
+        '<link rel="icon" type="image/png" sizes="32x32" href="' . e(asset('assets/icons/favicon-32.png')) . '">',
+        '<link rel="icon" type="image/png" sizes="16x16" href="' . e(asset('assets/icons/favicon-16.png')) . '">',
+        '<link rel="apple-touch-icon" href="' . e(asset('assets/icons/apple-touch-icon.png')) . '">',
+        '<link rel="manifest" href="' . e(asset('assets/icons/site.webmanifest')) . '">',
+    ]);
 }
 
 function redirect(string $path): void

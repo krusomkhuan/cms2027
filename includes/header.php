@@ -49,7 +49,7 @@ $admissionUrl = preg_match('#^https?://#i', setting('admission_url')) ? setting(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= e(($pageTitle ? $pageTitle . ' | ' : '') . $siteName) ?></title>
   <meta name="description" content="<?= e(setting('site_name') . ' ' . setting('site_name_en')) ?>">
-  <?php if (setting('favicon', setting('logo'))): ?><link rel="icon" type="image/png" href="<?= e(file_url(setting('favicon', setting('logo')))) ?>"><?php endif; ?>
+  <?= site_icon_tags() ?>
   <link rel="alternate" hreflang="th" href="<?= e(lang_url('th')) ?>">
   <link rel="alternate" hreflang="en" href="<?= e(lang_url('en')) ?>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +87,6 @@ $admissionUrl = preg_match('#^https?://#i', setting('admission_url')) ? setting(
       <a href="<?= url('events.php') ?>"><i class="bi bi-calendar-event"></i> <?= t('ปฏิทินกิจกรรม') ?></a>
     </div>
     <div class="ms-auto d-flex align-items-center gap-3">
-      <?php if (setting('phone')): ?><span class="d-none d-md-inline"><i class="bi bi-telephone"></i> <?= e(setting('phone')) ?></span><?php endif; ?>
       <?php if (setting('email')): ?><a class="d-none d-xl-inline" href="mailto:<?= e(setting('email')) ?>"><i class="bi bi-envelope"></i> <?= e(setting('email')) ?></a><?php endif; ?>
       <?php foreach ($socials as $icon => $href): ?><a href="<?= e($href) ?>" target="_blank" rel="noopener" aria-label="<?= substr($icon, 3) ?>"><i class="bi <?= $icon ?>"></i></a><?php endforeach; ?>
       <span class="font-size-ctl" role="group" aria-label="<?= t('ขนาดตัวอักษร') ?>">

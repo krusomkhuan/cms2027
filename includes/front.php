@@ -50,9 +50,6 @@ function person_card(array $p, string $extraClass = ''): string
     if (!empty($p['dept_name'])) {
         $meta .= '<div class="meta">' . e(tr($p, 'dept_name')) . '</div>';
     }
-    if (!empty($p['phone'])) {
-        $meta .= '<div class="meta"><i class="bi bi-telephone"></i> ' . e($p['phone']) . '</div>';
-    }
     return '<div class="card person-card ' . $extraClass . '"><div class="photo">' . $photo . '</div>'
         . '<div class="card-body p-3"><div class="name">' . e(personnel_name($p)) . '</div>'
         . '<div class="pos">' . e(tr($p, 'position')) . '</div>' . $meta . '</div></div>';

@@ -1,6 +1,8 @@
 <?php
 // คำแปลภาษาอังกฤษของข้อความหน้าเว็บ (key = ข้อความภาษาไทยที่ใช้ใน t())
 return [
+    'ผู้พัฒนาระบบ' => 'System Developer',
+    'หัวหน้าแผนกวิชาคอมพิวเตอร์และเทคโนโลยีธุรกิจดิจิทัล' => 'Head of the Department of Computer and Digital Business Technology',
     // เมนูและส่วนหัว
     'หน้าแรก' => 'Home',
     'เกี่ยวกับเรา' => 'About Us',
@@ -45,6 +47,10 @@ return [
     'กิจกรรมที่กำลังจะมาถึง' => 'Upcoming events',
     'ยังไม่มีกิจกรรมที่กำลังจะมาถึง' => 'No upcoming events',
     'ดูปฏิทินทั้งหมด' => 'View full calendar',
+    'สถานีโทรทัศน์เพื่อการศึกษาและพัฒนาอาชีพ' => 'Educational & Vocational Television',
+    'ล่าสุดจากช่อง' => 'Latest from the channel',
+    'ไลฟ์สด' => 'Live',
+    'วิดีโอทั้งหมด' => 'All videos',
     'ถึง' => 'until',
     'ผู้เรียนทั้งหมด (คน)' => 'Total students',
     'ระดับ ปวช. (คน)' => 'Vocational Certificate',
